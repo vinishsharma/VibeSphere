@@ -1,0 +1,18 @@
+{
+  "name": "vsbackend",
+  "version": "1.0.0",
+  "description": "Backend for VibeSphere App",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "author": "Vinish Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1",
+    "nodemon": "^3.1.9"
+  }
+}
