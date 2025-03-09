@@ -1,22 +1,29 @@
 import express from "express";
 import { config } from "dotenv";
-config();
 import connectDB from "./config/db.js";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import cors from "cors"
+import RootRouter from "./routes/RootRouter.js";
 
 const app = express();
 
+config();
 connectDB();
 
 app.get('/api', (req, res) => {
   res.send("Server is ready");
 });
 
-app.get('/api/jokes', (req, res) => {
-  res.send("Jokes is running...");
-});
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
+
+//All routes
+app.use('/api', RootRouter)
 
 const PORTNO = process.env.PORT;
 
 app.listen(PORTNO, () => {
-  console.log(`VibeSpere is serving at http://localhost:${PORTNO}`);
+  console.log(`✔︎ VIBE-SPHERE is serving at http://localhost:${PORTNO}\n`);
 });
