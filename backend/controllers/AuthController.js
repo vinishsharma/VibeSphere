@@ -88,4 +88,19 @@ const login = async (req, res) => {
 };
 
 
-export { signup, login };
+//Logout Controller
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+    });
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+export { signup, login, logout };

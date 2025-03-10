@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,6 +18,11 @@ const Login = () => {
         withCredentials: true
       } // Enables HTTP-Only cookies
       );
+
+      //Update auth context (without reloading)
+      if (response.data.user) {
+        setUser(response.data.user);
+      }
 
       // Redirect on successful login
       navigate("/profile");

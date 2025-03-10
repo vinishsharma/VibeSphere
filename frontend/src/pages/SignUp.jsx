@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignUp = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -34,6 +36,11 @@ const SignUp = () => {
 
       setMessage(response.data.message || "Signup Successful!");
       console.log("Signup Response:", response.data);
+
+      //Update auth context (without reloading)
+      if (response.data.user) {
+        setUser(response.data.user);
+      }
 
       // Redirect on successful login
       navigate("/profile");
@@ -121,7 +128,7 @@ const SignUp = () => {
 
         <p className="text-center text-gray-600 mt-4">
           Already have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="/login" className="text-blue-500 hover:underline">
             Login
           </a>
         </p>

@@ -9,14 +9,17 @@ import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
+import PrivateRoute from './routes/PrivateRoute.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
     </Route>
   )
 )
