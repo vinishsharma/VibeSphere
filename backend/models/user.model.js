@@ -41,7 +41,8 @@ const UserSchema = new mongoose.Schema(
       default: "",
     },
     dob: {
-      type: Date
+      type: Date,
+      default: new Date("2000-01-01")
     },
     followers: [
       {

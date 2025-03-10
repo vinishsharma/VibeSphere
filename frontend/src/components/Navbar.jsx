@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { FaBars, FaTimes, FaUser } from "react-icons/fa";
+import { FaBars, FaTimes, FaUser, FaHome, FaSearch, FaPlus } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 
@@ -29,18 +29,30 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white shadow-md px-6 flex justify-between items-center">
+    <nav className={`bg-white shadow-md px-10 py-2 flex ${user ? "justify-between" : "justify-center"} items-center sticky top-0`}>
 
-      {/* Left Side: Logo & Name */}
+      {/* Left Section: Logo & Name */}
       <div className="flex items-center space-x-2">
-        <img src="/logo/vibeLogo.png" alt="VibeSphere Logo" className="h-auto w-24" />
-        <div>
-          <h1 className="text-3xl font-semibold text-gray-800">VibeSphere</h1>
-          <p className="text-sm text-gray-800">your moments, your vibe</p>
+        <img src="/logo/newLogo.svg" alt="VibeSphere Logo" className="h-auto w-16" />
+        <div className="">
+          <h1 className="text-3xl font-semibold text-[#163049]">VibeSphere</h1>
+          <p className="text-sm text-[#163049]">your moments, your vibe</p>
         </div>
       </div>
 
-      {/* Right Side: Logged In user profile*/}
+      {/* Mid Section: Home Liked Search */}
+      {user && (
+        <div className="flex gap-10">
+          <a href="/" className="flex items-center gap-1"><FaHome size={20} /><p>Home</p></a>
+          <a href="#" className="flex items-center gap-1"><div className="border-black border-2 text-black rounded-md w-5 h-5 flex items-center justify-center">
+            <FaPlus size={12} />
+          </div><p>Create</p></a>
+          {/* <a href="#" className="flex items-center gap-1"><FaPlus /><p>Create</p></a> */}
+          <a href="#" className="flex items-center gap-1"><FaSearch /><p>Search</p></a>
+        </div>
+      )}
+
+      {/* Right Section: Logged In user profile*/}
       {user && (
         <div className="flex items-center">
           <img
