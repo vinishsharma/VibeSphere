@@ -1,1 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Alata&display=swap');
 @import "tailwindcss";
+
+.aclonica-regular {
+  font-family: "Aclonica", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.alata-regular {
+  font-family: "Alata", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}

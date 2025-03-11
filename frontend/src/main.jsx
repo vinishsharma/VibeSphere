@@ -10,6 +10,8 @@ import SignUp from './pages/SignUp.jsx'
 import Profile from './pages/Profile.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import PrivateRoute from './routes/PrivateRoute.jsx'
+import CreatePost from './pages/CreatePost.jsx'
+import SearchUser from './pages/SearchUser.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +21,8 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/search-user" element={<SearchUser />} />
       </Route>
     </Route>
   )
