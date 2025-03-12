@@ -181,20 +181,10 @@ const Profile = () => {
 
       {/* Floating Edit Profile Form */}
       {isEditing && (
-        <div className="fixed inset-0 bg-[#2222225e] flex justify-center items-center">
+        <div className="fixed inset-0 bg-[#22222277] flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
-            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center text-[#163049]">Edit Profile</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-
-              {/* <label htmlFor="profilePicture">Upload Profile Picture</label>
-              <input
-                type="file"
-                id="profilePicture"
-                name="profilePicture"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full border p-2 rounded mb-2 hidden"
-              /> */}
 
               <label className="border-2 rounded-lg border-dashed border-gray-400 p-6 w-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100">
                 <input

@@ -17,7 +17,7 @@ app.get('/api', (req, res) => {
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 //All routes
 app.use('/api', RootRouter)
