@@ -5,7 +5,7 @@ import User from "../models/user.model.js";
 const editProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, username, bio, dob, city } = req.body;
+    const { name, username, bio, dob, city, profilePicture } = req.body;
 
     // Check if the new username is already taken by another user
     const usernameExists = await User.findOne({ username, _id: { $ne: userId } });
@@ -16,7 +16,7 @@ const editProfile = async (req, res) => {
     // Update user profile
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { username, name, bio, city, dob },
+      { username, name, bio, city, dob, profilePicture },
       { new: true }
     );
 

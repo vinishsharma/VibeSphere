@@ -38,9 +38,9 @@ const PostSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
-    isPrivate: {
-      type: Boolean,
-      default: false,
+    tags: {
+      type: [String],
+      default: [],
     }
   },
   { timestamps: true }

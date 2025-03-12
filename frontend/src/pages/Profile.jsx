@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaCalendarDay, FaInfoCircle } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaCalendarDay, FaInfoCircle, FaImage } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
@@ -9,6 +9,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [profilePicURL, setProfilePicURL] = useState("");
   const { user, setUser } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -16,11 +17,39 @@ const Profile = () => {
     name: user?.name || "",
     bio: user?.bio || "",
     city: user?.city || "",
+    profilePicture: user?.profilePicture || "",
     dob: user?.dob || "",
   });
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const fileData = new FormData();
+    fileData.append("profile-pic", file);
+
+    try {
+      const response = await axios.post("/api/upload/profile-pic", fileData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
+
+      console.log(response.data);
+
+      if (response.data.imageURL) {
+        setFormData((prevFormData) => ({ ...prevFormData, profilePicture: response.data.imageURL }));
+        setProfilePicURL(response.data.imageURL);
+      }
+
+
+    } catch (err) {
+      console.error("Error uploading image:", err);
+      setError("Failed to upload image");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -36,7 +65,7 @@ const Profile = () => {
       );
 
       setMessage(response.data.message || "Profile Updated Successful!");
-      console.log("Updated Profile:", response.data);
+      // console.log("Updated Profile:", response.data);
 
       //Update auth context (without reloading)
       if (response.data.user) {
@@ -52,7 +81,7 @@ const Profile = () => {
   };
 
   //Format the date before displaying
-  const formatDate = (isoDate) => {
+  const changeDateFormat = (isoDate) => {
     if (!isoDate) return "Invalid Date";
 
     const date = new Date(isoDate);
@@ -70,7 +99,7 @@ const Profile = () => {
         <div className="flex items-center w-full">
           <div className="w-1/3 flex items-center justify-center">
             <img
-              src="profile.jpeg"
+              src={user?.profilePicture || "profile.jpg"}
               alt="Profile"
               className="w-52 h-52 rounded-full object-cover ring-1 ring-gray-200"
             />
@@ -113,13 +142,13 @@ const Profile = () => {
             </div>
             <div className="flex items-center text-gray-600 gap-2">
               <FaCalendarDay color="#999" />
-              <p>{formatDate(user.dob)}</p>
+              <p>{changeDateFormat(user.dob)}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <hr className="my-10 w-[70%] mx-auto border-1 border-gray-500 border-dashed" />
+      <hr className="my-10 w-[60%] mx-auto border-1 border-gray-300" />
 
       {/* Toggle Buttons for Posts */}
       <div className="flex justify-center gap-6 mt-6">
@@ -155,51 +184,94 @@ const Profile = () => {
         <div className="fixed inset-0 bg-[#2222225e] flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-            <form onSubmit={handleSubmit}>
-              <label name="username">Username</label>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
+              {/* <label htmlFor="profilePicture">Upload Profile Picture</label>
               <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded mb-2"
-                placeholder="Username"
-              />
-              <label name="name">Full Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded mb-2"
-                placeholder="Name"
-              />
-              <label name="city">City</label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded mb-2"
-                placeholder="City"
-              />
-              <label name="bio">About Me</label>
-              <input
-                type="text"
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded mb-2"
-                placeholder="Bio"
-              />
-              <label name="dob">Date of Birth</label>
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded mb-4"
-              />
+                type="file"
+                id="profilePicture"
+                name="profilePicture"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full border p-2 rounded mb-2 hidden"
+              /> */}
+
+              <label className="border-2 rounded-lg border-dashed border-gray-400 p-6 w-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                <div className="flex flex-row items-center gap-10 text-gray-500">
+                  <div className="flex flex-col items-center">
+                    <FaImage className="text-2xl" />
+                    <span className="text-xl">Upload Profile Image</span>
+                  </div>
+                  {profilePicURL &&
+                    <img src={profilePicURL} height={100} width={100} className="w-24 h-24 rounded-full object-cover" />
+                  }
+                </div>
+              </label>
+
+              <label htmlFor="username">Username
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className="w-full border p-2 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-[#163049]"
+                  placeholder="Username"
+                />
+              </label>
+
+              <label htmlFor="name">Full Name
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full border p-2 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-[#163049]"
+                  placeholder="Name"
+                />
+              </label>
+
+              <label htmlFor="city">City
+                <input
+                  type="text"
+                  name="city"
+                  id="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="w-full border p-2 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-[#163049]"
+                  placeholder="City"
+                />
+              </label>
+
+              <label htmlFor="bio">About Me
+                <input
+                  type="text"
+                  name="bio"
+                  id="bio"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  className="w-full border p-2 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-[#163049]"
+                  placeholder="Bio"
+                />
+              </label>
+
+              <label htmlFor="dob">Date of Birth
+                <input
+                  type="date"
+                  name="dob"
+                  id="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
+                  className="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-1 focus:ring-[#163049]"
+                />
+              </label>
 
               {/* Display Success or Failure of edit profile */}
               {message && <p className="text-green-500 text-center mb-4">{message}</p>}

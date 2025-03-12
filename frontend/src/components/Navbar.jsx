@@ -43,22 +43,23 @@ const Navbar = () => {
         </div>
       </Link>
 
+
       {/* Mid Section: Home Liked Search */}
       {user && (
         <div className="flex gap-10">
-          <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049]" : ""} flex items-center gap-1 p-1`}>
+          <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <FaHome size={20} />
             <p>Home</p>
           </NavLink>
 
-          <NavLink to="/create-post" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049]" : ""} flex items-center gap-1 p-1`}>
-            <div className="border-black border-2 text-black rounded-md w-5 h-5 flex items-center justify-center">
+          <NavLink to="/create-post" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
+            <div className="border-black border-2 rounded-md w-5 h-5 flex items-center justify-center">
               <FaPlus size={12} />
             </div>
             <p>Create</p>
           </NavLink>
 
-          <NavLink to="/search-user" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049]" : ""} flex items-center gap-1 p-1`}>
+          <NavLink to="/search-user" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
             <FaSearch />
             <p>Search</p>
           </NavLink>
@@ -69,15 +70,15 @@ const Navbar = () => {
       {user && (
         <div className="flex items-center">
           <img
-            src="profile.jpeg"
-            // src={user.profilePicture}
+            src={user.profilePicture || "profile.jpg"}
             alt="Profile"
-            className="h-10 w-10 rounded-full border border-gray-300"
+            className="h-10 w-10 rounded-full border border-gray-300 object-cover"
           />
+          {/* Display first name of logged-in user */}
           <div className="px-4 text-xl">{user.name.split(" ")[0]}</div>
 
           <div ref={dropdownRef} className="relative">
-            <button className="text-2xl" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />}</button>
+            <button className="text-2xl cursor-pointer" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />}</button>
             {isMenuOpen && (
               <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg ring-1 ring-gray-200 w-40">
                 <ul className="">

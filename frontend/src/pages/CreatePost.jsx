@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { FaImage, FaVideo } from "react-icons/fa";
+import { FaImage, FaTag, FaVideo } from "react-icons/fa";
 
 const CreatePost = () => {
   const [caption, setCaption] = useState("");
   const [media, setMedia] = useState(null);
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [tags, setTags] = useState([]);
 
   const handleMediaUpload = (e) => {
     const file = e.target.files[0];
@@ -13,15 +13,33 @@ const CreatePost = () => {
     }
   };
 
+  // Handle adding tags
+  const handleTagInput = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const newTag = e.target.value.trim().replace(/\s+/g, "");
+      if (newTag && !tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+      }
+      e.target.value = ""; // Clear input field after adding tag
+    }
+  };
+
+  // Remove a tag
+  const removeTag = (index) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  //API call
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ caption, media, isPrivate });
+    console.log({ caption, media, tags });
     // Handle form submission (API call)
   };
 
   return (
     <div className="w-[70%] mx-auto py-10 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-center text-[#163049]">Create a Post</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-[#163049]">Create a Post</h2>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-3/4 mx-auto">
         {/* Media Upload Section */}
@@ -56,20 +74,31 @@ const CreatePost = () => {
           rows="3"
         ></textarea>
 
-        {/* Private Checkbox */}
-        <div className="mt-4 flex items-center gap-2">
+        {/* Tags Input */}
+        <div className="mt-4">
+          <label className="block text-[#163049] font-semibold p-2"><FaTag className="inline-block" color="#163049" /> Add Tags</label>
           <input
-            type="checkbox"
-            checked={isPrivate}
-            onChange={() => setIsPrivate(!isPrivate)}
-            className="w-5 h-5"
+            type="text"
+            placeholder="Add tags (press Enter)"
+            onKeyDown={handleTagInput}
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#163049]"
           />
-          <label className="text-gray-700">Make this post private</label>
+          {/* Display Tags */}
+          <div className="flex flex-wrap gap-2 m-6 items-center">
+            {tags.map((tag, index) => (
+              <div key={index} className="flex items-center bg-gray-200 text-gray-800 px-3 py-1 rounded-full">
+                <span>#{tag}</span>
+                <button type="button" onClick={() => removeTag(index)} className="ml-2 text-red-400 font-bold cursor-pointer">
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full mt-6 bg-[#163049] opacity-80 text-white py-2 rounded-lg hover:opacity-100 cursor-pointer">
-          Upload Post
+        <button type="submit" className="w-full bg-[#163049] opacity-80 text-white py-2 rounded-lg hover:opacity-100 cursor-pointer">
+          Upload
         </button>
       </form>
     </div>

@@ -68,6 +68,10 @@ const UserSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
+    isAccountPrivate: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
