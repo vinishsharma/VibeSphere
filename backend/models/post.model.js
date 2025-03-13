@@ -11,20 +11,19 @@ const PostSchema = new mongoose.Schema(
       type: String,
       maxlength: 100,
       default: "",
+      required: true,
     },
-    media: [
-      {
-        url: {                //Cloudinary URL
-          type: String,
-          required: true
-        },
-        type: {
-          type: String,
-          enum: ["image", "video"],
-          required: true,
-        },
+    media: {
+      url: {                //Cloudinary URL
+        type: String,
+        required: true
       },
-    ],
+      type: {
+        type: String,
+        enum: ["image", "video"],
+        required: true,
+      },
+    },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

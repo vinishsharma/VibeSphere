@@ -1,15 +1,64 @@
 import React, { useState } from "react";
-import { FaImage, FaTag, FaVideo } from "react-icons/fa";
+import { FaCommentDots, FaImage, FaTag, FaVideo } from "react-icons/fa";
+import axios from "axios";
+import { Spinner, Loader } from "../components/Spinner.jsx";
 
 const CreatePost = () => {
   const [caption, setCaption] = useState("");
-  const [media, setMedia] = useState(null);
+  const [media, setMedia] = useState({ url: "", type: "" });
   const [tags, setTags] = useState([]);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleMediaUpload = (e) => {
+  const handleMediaUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setMedia(URL.createObjectURL(file));
+    if (!file) return;
+
+    const fileData = new FormData();
+    fileData.append("post-media", file);
+
+    try {
+      setLoading(true);
+      let response;
+      let mediaType = "";
+
+      // Check file type to determine which API to call
+      if (file.type.startsWith("image/")) {
+        response = await axios.post("/api/upload/post-image", fileData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+        mediaType = "image";
+      }
+      else if (file.type.startsWith("video/")) {
+        response = await axios.post("/api/upload/post-video", fileData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+        mediaType = "video";
+      } else {
+        setError("Unsupported file format");
+        return;
+      }
+
+      console.log(response.data);
+
+      // Store both URL & type inside media object
+      if (response.data.imageURL || response.data.videoURL) {
+        setMedia({
+          url: response.data.imageURL || response.data.videoURL,
+          type: mediaType,
+        });
+      } else {
+        setError("Invalid response from server");
+      }
+
+    } catch (err) {
+      console.error("Error uploading media:", err);
+      setError("Failed to upload media");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,11 +79,40 @@ const CreatePost = () => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  //API call
-  const handleSubmit = (e) => {
+  //API call to create post
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ caption, media, tags });
-    // Handle form submission (API call)
+    setMessage("");
+    setError("");
+
+    if (!caption.trim()) {
+      setError("Caption is required");
+      return;
+    }
+
+    if (!media.url || !media.type) {
+      setError("Please upload an image or video");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "/api/post/create",
+        { media, caption, tags },
+        { withCredentials: true } // Ensures cookies are sent
+      );
+
+      setMessage(response.data.message || "Post Created Successful!");
+      console.log("Created Post:", response.data);
+
+      // Reset form after successful post
+      setCaption("");
+      setTags([]);
+      setMedia({ url: "", type: "" });
+    } catch (error) {
+      console.error("Error creating post:", err);
+      setError(err.response?.data?.error || "Failed to create post");
+    }
   };
 
   return (
@@ -43,8 +121,13 @@ const CreatePost = () => {
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-3/4 mx-auto">
         {/* Media Upload Section */}
-        <label className="border-2 border-dashed border-gray-400 p-10 w-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100">
-          <input type="file" accept="image/*,video/*" onChange={handleMediaUpload} className="hidden" />
+        <label className="border-2 rounded-lg border-dashed border-gray-400 p-10 w-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100">
+          <input
+            type="file"
+            accept="image/*,video/*"
+            onChange={handleMediaUpload}
+            className="hidden"
+          />
           <div className="flex flex-col items-center gap-2 text-gray-500">
             <div className="flex gap-4">
               <FaImage className="text-3xl" />
@@ -55,24 +138,36 @@ const CreatePost = () => {
         </label>
 
         {/* Preview */}
-        {media && (
-          <div className="mt-4">
-            {media.includes("video") ? (
-              <video src={media} controls className="w-1/3 mx-auto rounded-lg" />
+        {media.url && (
+          <div className="mt-4 rounded-lg overflow-hidden mx-auto w-2/5">
+            {media.type === "image" ? (
+              <img
+                src={media.url}
+                className="w-full h-auto"
+              />
             ) : (
-              <img src={media} alt="Preview" className="w-1/3 object-cover mx-auto rounded-lg" />
+              <video controls className="w-full h-auto">
+                <source src={media.url} type="video/mp4" />
+              </video>
             )}
           </div>
         )}
 
+        {loading && (
+          <Loader loading={loading} className="mt-4" />
+        )}
+
         {/* Caption Input */}
-        <textarea
-          placeholder="Write a caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          className="w-full mt-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#163049]"
-          rows="3"
-        ></textarea>
+        <div className="mt-4">
+          <label className="block text-[#163049] font-semibold p-2"><FaCommentDots className="inline-block" color="#163049" /> Caption</label>
+          <textarea
+            placeholder="Write a caption..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#163049]"
+            rows="3"
+          ></textarea>
+        </div>
 
         {/* Tags Input */}
         <div className="mt-4">
@@ -95,6 +190,10 @@ const CreatePost = () => {
             ))}
           </div>
         </div>
+
+        {/* Display Success or Failure of Create Post */}
+        {message && <p className="text-green-500 text-center mb-4">{message}</p>}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         {/* Submit Button */}
         <button type="submit" className="w-full bg-[#163049] opacity-80 text-white py-2 rounded-lg hover:opacity-100 cursor-pointer">

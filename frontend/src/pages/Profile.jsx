@@ -3,6 +3,7 @@ import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaCalendarDay, FaInfo
 import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
+import { Loader } from "../components/Spinner";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -10,6 +11,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [profilePicURL, setProfilePicURL] = useState("");
+  const [loading, setLoading] = useState(false);
   const { user, setUser } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -25,7 +27,7 @@ const Profile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = async (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -33,12 +35,13 @@ const Profile = () => {
     fileData.append("profile-pic", file);
 
     try {
+      setLoading(true);
       const response = await axios.post("/api/upload/profile-pic", fileData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data.imageURL) {
         setFormData((prevFormData) => ({ ...prevFormData, profilePicture: response.data.imageURL }));
@@ -47,8 +50,10 @@ const Profile = () => {
 
 
     } catch (err) {
-      console.error("Error uploading image:", err);
-      setError("Failed to upload image");
+      console.error("Error uploading profile pic:", err);
+      setError("Failed to upload profile pic");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,7 +77,7 @@ const Profile = () => {
         setUser(response.data.user);
       }
 
-      // setIsEditing(false);
+      setIsEditing(false);
 
     } catch (err) {
       setError(err.response?.data?.message || "Profile Updation Failed");
@@ -190,7 +195,7 @@ const Profile = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={handleImageUpload}
                   className="hidden"
                 />
                 <div className="flex flex-row items-center gap-10 text-gray-500">
@@ -199,7 +204,10 @@ const Profile = () => {
                     <span className="text-xl">Upload Profile Image</span>
                   </div>
                   {profilePicURL &&
-                    <img src={profilePicURL} height={100} width={100} className="w-24 h-24 rounded-full object-cover" />
+                    <img src={profilePicURL} className="w-24 h-24 rounded-full object-cover" />
+                  }
+                  {loading &&
+                    <Loader loading={loading} />
                   }
                 </div>
               </label>
@@ -269,7 +277,7 @@ const Profile = () => {
 
               <div className="flex justify-between">
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Save</button>
-                <button type="button" onClick={() => setIsEditing(false)} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
+                <button type="button" onClick={() => { setIsEditing(false); setProfilePicURL("") }} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
               </div>
             </form>
           </div>

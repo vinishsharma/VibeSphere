@@ -1,12 +1,12 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { FaBars, FaTimes, FaUser, FaHome, FaSearch, FaPlus, FaCog } from "react-icons/fa";
+import { FaBars, FaTimes, FaUser, FaHome, FaSearch, FaPlus, FaCog, FaCompass } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, loading, logout } = useAuth();
+  const { user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -46,7 +46,7 @@ const Navbar = () => {
 
       {/* Mid Section: Home Liked Search */}
       {user && (
-        <div className="flex gap-10">
+        <div className="flex gap-5">
           <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <FaHome size={20} />
             <p>Home</p>
@@ -57,6 +57,11 @@ const Navbar = () => {
               <FaPlus size={12} />
             </div>
             <p>Create</p>
+          </NavLink>
+
+          <NavLink to="/explore" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
+            <FaCompass size={20} />
+            <p>Explore</p>
           </NavLink>
 
           <NavLink to="/search-user" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
