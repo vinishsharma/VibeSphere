@@ -1,4 +1,5 @@
 import Post from '../models/post.model.js'
+import User from '../models/user.model.js';
 
 const createPost = async (req, res) => {
   try {
@@ -16,7 +17,10 @@ const createPost = async (req, res) => {
       tags,
     });
 
-    await newPost.save();
+    const createdPost = await newPost.save();
+
+    //Adding created post's ID in posts array of loggedIn user
+    await User.findByIdAndUpdate(userId, { $push: { posts: createdPost._id } });
 
     res.status(201).json({
       success: true,
