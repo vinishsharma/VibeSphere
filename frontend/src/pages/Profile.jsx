@@ -39,18 +39,28 @@ const Profile = () => {
 
     try {
       setLoading(true);
+
+      // Save previous profile picture before uploading a new one
+      const previousProfilePic = formData.profilePicture;
+
       const response = await axios.post("/api/upload/profile-pic", fileData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      // console.log(response.data);
-
       if (response.data.imageURL) {
-        setFormData((prevFormData) => ({ ...prevFormData, profilePicture: response.data.imageURL }));
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          profilePicture: response.data.imageURL, // Set new image
+        }));
         setProfilePicURL(response.data.imageURL);
-      }
 
+        // Store previous image for potential deletion
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          previousProfilePic,
+        }));
+      }
     } catch (err) {
       console.error("Error uploading profile pic:", err);
       setError("Failed to upload profile pic");
@@ -83,11 +93,31 @@ const Profile = () => {
       toast.success(response.data.message || "Profile Updated Successful!");
       setIsEditing(false);
 
+      // Clear previousProfilePic since it's no longer needed
+      setFormData((prev) => ({ ...prev, previousProfilePic: "" }));
+
     } catch (err) {
       setError(err.response?.data?.message || "Profile Updation Failed");
       console.error("Error in updating profile:", err);
       toast.error(err.response?.data?.message || "Profile Updation Failed");
     }
+  };
+
+  // Handle cancel to delete the uploaded image if not save
+  const handleCancel = async () => {
+    if (profilePicURL && profilePicURL !== formData.previousProfilePic) {
+      try {
+        await axios.post("/api/upload/delete-image", { imageURL: profilePicURL }, { withCredentials: true });
+        // console.log("Deleted image from Cloudinary:", profilePicURL);
+      } catch (err) {
+        console.error("Failed to delete image:", err);
+      }
+    }
+
+    // Reset state
+    setIsEditing(false);
+    setProfilePicURL(""); // Restore old image
+    setFormData((prev) => ({ ...prev, profilePicture: prev.previousProfilePic || "" }));
   };
 
   //Format the date before displaying
@@ -210,6 +240,7 @@ const Profile = () => {
           setIsEditing={setIsEditing}
           setProfilePicURL={setProfilePicURL}
           handleInputChange={handleInputChange}
+          handleCancel={handleCancel}
         />
       )}
     </div>

@@ -9,7 +9,7 @@ const router = express.Router();
 //all routes
 router.use('/auth', AuthRouter);
 router.use('/user', UserRouter);
-router.use('/upload', UploadRouter);
+router.use('/upload', UploadRouter);  //Cloudinary
 router.use('/post', PostRouter);
 
 export default router;

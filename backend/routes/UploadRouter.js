@@ -1,5 +1,5 @@
 import express from "express";
-import { upload, uploadImage, uploadVideo } from "../controllers/UplaodController.js";
+import { upload, uploadImage, uploadVideo, deleteImage } from "../controllers/UplaodController.js";
 
 const router = express.Router();
 
@@ -7,5 +7,6 @@ const router = express.Router();
 router.post("/profile-pic", upload.single("profile-pic"), uploadImage);
 router.post("/post-image", upload.single("post-media"), uploadImage);
 router.post("/post-video", upload.single("post-media"), uploadVideo);
+router.post("/delete-image", deleteImage);
 
 export default router;

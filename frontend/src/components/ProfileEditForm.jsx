@@ -9,7 +9,7 @@ const ProfileEditForm = ({
   handleImageUpload,
   handleInputChange,
   handleSubmit,
-  setIsEditing,
+  handleCancel,
   setProfilePicURL
 }) => {
   return (
@@ -101,7 +101,7 @@ const ProfileEditForm = ({
 
             <div className="flex justify-between">
               <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Save</button>
-              <button type="button" onClick={() => { setIsEditing(false); setProfilePicURL("") }} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
+              <button type="button" onClick={() => { handleCancel(); setProfilePicURL("") }} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
             </div>
           </form>
         </div>

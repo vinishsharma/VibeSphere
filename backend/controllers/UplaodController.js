@@ -55,4 +55,23 @@ const uploadVideo = async (req, res) => {
   }
 };
 
-export { upload, uploadImage, uploadVideo };
+//  Delete an Image from Cloudinary
+const deleteImage = async (req, res) => {
+  try {
+    const { imageURL } = req.body;
+    if (!imageURL) return res.status(400).json({ error: "No image URL provided" });
+
+    // Extract public ID correctly
+    const parts = imageURL.split("/");
+    const publicId = parts.slice(-2).join("/").split(".")[0];
+
+    // Delete from Cloudinary
+    const result = await cloudinaryV2.uploader.destroy(publicId);
+    res.json({ success: true, message: "Image deleted successfully", result });
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    res.status(500).json({ error: "Failed to delete image" });
+  }
+};
+
+export { upload, uploadImage, uploadVideo, deleteImage };
