@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaCalendarDay, FaInfoCircle } from "react-icons/fa";
+import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import ProfileEditForm from "../components/ProfileEditForm";
 import { toast } from "react-toastify";
+import PostCard from "../components/PostCard"
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -14,6 +15,7 @@ const Profile = () => {
   const [profilePicURL, setProfilePicURL] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useAuth();
+  const [posts, setPosts] = useState([]);
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
@@ -98,6 +100,22 @@ const Profile = () => {
     return date.toLocaleDateString("en-GB", options); // Example: "1 Jan 2000"
   };
 
+  //Fetch user's all posts
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      if (!user?.posts?.length) return; // If no posts, exit early
+
+      try {
+        const res = await axios.post("/api/post/getPostsByIds", { postIds: user.posts });
+        setPosts(res.data.posts); // Assuming API returns { posts: [...] }
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    };
+
+    fetchUserPosts();
+  }, [user.posts]); // Runs when user.posts change
+
   return (
     <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
       {/* Profile Header */}
@@ -147,7 +165,7 @@ const Profile = () => {
               <p>{user.bio}</p>
             </div>
             <div className="flex items-center text-gray-600 gap-2">
-              <FaCalendarDay color="#999" />
+              <FaBirthdayCake color="#999" />
               <p>{changeDateFormat(user.dob)}</p>
             </div>
           </div>
@@ -174,15 +192,11 @@ const Profile = () => {
 
       {/* Posts Section */}
       <div className="grid grid-cols-3 gap-4 mt-6">
-        {Array.from({ length: 9 }).map((_, index) => (
-          <div key={index} className="bg-gray-200 h-40 rounded-lg shadow">
-            <img
-              src='temp.jpg'
-              alt=''
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => <PostCard key={post._id} post={post} />)
+        ) : (
+          <p className="text-center col-span-3 text-gray-500">No posts found.</p>
+        )}
       </div>
 
       {/* Floating Edit Profile Form */}

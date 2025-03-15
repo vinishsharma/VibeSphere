@@ -33,4 +33,15 @@ const createPost = async (req, res) => {
   }
 }
 
-export { createPost }
+const getPostsByIds = async (req, res) => {
+  try {
+    const { postIds } = req.body;
+    const posts = await Post.find({ _id: { $in: postIds } }).populate(); // Populate user details
+    res.json({ posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching posts" });
+  }
+}
+
+export { createPost, getPostsByIds }
