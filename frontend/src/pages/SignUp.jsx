@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -44,11 +45,12 @@ const SignUp = () => {
       }
 
       // Redirect on successful login
+      toast.success("Registered Successfully");
       navigate("/profile");
 
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
-      console.error("Signup Error:", err);
+      toast.error(err.response?.data?.message || "Signup failed");
     }
   };
 
@@ -120,10 +122,6 @@ const SignUp = () => {
           >
             Sign Up
           </button>
-
-          {/* Display Success or Failure of signup */}
-          {message && <p className="text-green-500 text-center mb-4">{message}</p>}
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         </form>
 

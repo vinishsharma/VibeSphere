@@ -10,9 +10,7 @@ const ProfileEditForm = ({
   handleInputChange,
   handleSubmit,
   setIsEditing,
-  setProfilePicURL,
-  message,
-  error
+  setProfilePicURL
 }) => {
   return (
     <>
@@ -100,10 +98,6 @@ const ProfileEditForm = ({
                 className="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-1 focus:ring-[#163049]"
               />
             </label>
-
-            {/* Display Success or Failure of edit profile */}
-            {message && <p className="text-green-500 text-center mb-4">{message}</p>}
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
             <div className="flex justify-between">
               <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Save</button>

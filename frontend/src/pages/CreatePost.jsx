@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { FaCommentDots, FaImage, FaTag, FaVideo } from "react-icons/fa";
 import axios from "axios";
-import { Spinner, Loader } from "../components/Spinner.jsx";
+import { Loader } from "../components/Spinner.jsx";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const CreatePost = () => {
   const [caption, setCaption] = useState("");
@@ -10,6 +12,7 @@ const CreatePost = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useAuth();
 
   const handleMediaUpload = async (e) => {
     const file = e.target.files[0];
@@ -57,6 +60,7 @@ const CreatePost = () => {
     } catch (err) {
       console.error("Error uploading media:", err);
       setError("Failed to upload media");
+      toast.error("Error Uploading Media");
     } finally {
       setLoading(false);
     }
@@ -105,13 +109,21 @@ const CreatePost = () => {
       setMessage(response.data.message || "Post Created Successful!");
       console.log("Created Post:", response.data);
 
+      // Update AuthContext with the new post without reloading
+      setUser((prevUser) => ({
+        ...prevUser,
+        posts: [...(prevUser.posts || []), response.data.post], // Append new post
+      }));
+
       // Reset form after successful post
       setCaption("");
       setTags([]);
       setMedia({ url: "", type: "" });
+      toast.success(response.data.message || "Post Created Successful!");
     } catch (error) {
       console.error("Error creating post:", err);
       setError(err.response?.data?.error || "Failed to create post");
+      toast.error(err.response?.data?.error || "Failed to create post");
     }
   };
 

@@ -30,7 +30,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`bg-white shadow-md px-10 py-3 flex ${user ? "justify-between" : "justify-center"} items-center sticky top-0 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto`}>
+    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center sticky top-0 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto`}>
 
       {/* Left Section: Logo & Name */}
       <Link to='/'>
@@ -47,24 +47,24 @@ const Navbar = () => {
       {/* Mid Section: Home Liked Search */}
       {user && (
         <div className="flex gap-5">
-          <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
+          <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <FaHome size={20} />
             <p>Home</p>
           </NavLink>
 
-          <NavLink to="/create-post" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
+          <NavLink to="/create-post" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <div className="border-black border-2 rounded-md w-5 h-5 flex items-center justify-center">
               <FaPlus size={12} />
             </div>
             <p>Create</p>
           </NavLink>
 
-          <NavLink to="/explore" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
+          <NavLink to="/explore" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
             <FaCompass size={20} />
             <p>Explore</p>
           </NavLink>
 
-          <NavLink to="/search-user" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-xl transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
+          <NavLink to="/search-user" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1 `}>
             <FaSearch />
             <p>Search</p>
           </NavLink>

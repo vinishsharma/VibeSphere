@@ -4,6 +4,7 @@ import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import ProfileEditForm from "../components/ProfileEditForm";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -48,10 +49,10 @@ const Profile = () => {
         setProfilePicURL(response.data.imageURL);
       }
 
-
     } catch (err) {
       console.error("Error uploading profile pic:", err);
       setError("Failed to upload profile pic");
+      toast.error("Failed Uploading Profile Pic");
     } finally {
       setLoading(false);
     }
@@ -77,11 +78,13 @@ const Profile = () => {
         setUser(response.data.user);
       }
 
+      toast.success(response.data.message || "Profile Updated Successful!");
       setIsEditing(false);
 
     } catch (err) {
       setError(err.response?.data?.message || "Profile Updation Failed");
       console.error("Error in updating profile:", err);
+      toast.error(err.response?.data?.message || "Profile Updation Failed");
     }
   };
 
@@ -94,8 +97,6 @@ const Profile = () => {
 
     return date.toLocaleDateString("en-GB", options); // Example: "1 Jan 2000"
   };
-
-
 
   return (
     <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
@@ -195,8 +196,6 @@ const Profile = () => {
           setIsEditing={setIsEditing}
           setProfilePicURL={setProfilePicURL}
           handleInputChange={handleInputChange}
-          message={message}
-          error={error}
         />
       )}
     </div>
