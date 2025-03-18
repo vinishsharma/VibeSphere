@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCalendarDay, FaComment, FaHeart } from "react-icons/fa";
+import { FaCalendarDay, FaComment, FaHeart, FaPaperclip } from "react-icons/fa";
 
 const PostCard = ({ post }) => {
   return (
@@ -20,7 +20,9 @@ const PostCard = ({ post }) => {
       </div>
 
       {/* Post Details */}
-      <div className="p-3">
+      <div className="px-3">
+        {/* Caption */}
+        <div className="py-2 font-bold truncate" tooltip={post.caption}>{post.caption}</div>
         {/* Likes & Comments Count */}
         <div className="flex justify-between">
           <div className="flex items-center gap-2 text-gray-500 text-lg font-semibold">
@@ -32,7 +34,7 @@ const PostCard = ({ post }) => {
         </div>
 
         {/* Creation Date */}
-        <p className="text-gray-400 text-sm mt-2 flex justify-end items-center gap-1">
+        <p className="text-gray-400 text-sm mt-2 flex justify-end items-center gap-1 pb-1">
           <FaCalendarDay size={12} /> {new Date(post.createdAt).toLocaleDateString()}
         </p>
       </div>

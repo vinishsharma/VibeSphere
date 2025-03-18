@@ -31,4 +31,44 @@ const editProfile = async (req, res) => {
   }
 };
 
-export { editProfile };
+//Get all users controller
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
+};
+
+//Controller to fetch all users except logged-in
+const getAllUsersExceptMe = async (req, res) => {
+  try {
+    const myId = req.user.id;
+
+    // Fetch all users except the logged-in user
+    const users = await User.find({ _id: { $ne: myId } }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
+};
+
+
+export { editProfile, getAllUsers, getAllUsersExceptMe };

@@ -30,6 +30,7 @@ const Profile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //Uploading the image to Cloudinary
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -70,6 +71,7 @@ const Profile = () => {
     }
   };
 
+  //Saving the form to db
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -107,6 +109,7 @@ const Profile = () => {
   const handleCancel = async () => {
     if (profilePicURL && profilePicURL !== formData.previousProfilePic) {
       try {
+        setIsEditing(false);
         await axios.post("/api/upload/delete-image", { imageURL: profilePicURL }, { withCredentials: true });
         // console.log("Deleted image from Cloudinary:", profilePicURL);
       } catch (err) {
@@ -221,7 +224,7 @@ const Profile = () => {
       </div>
 
       {/* Posts Section */}
-      <div className="grid grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-3 gap-4 mt-12">
         {posts.length > 0 ? (
           posts.map((post) => <PostCard key={post._id} post={post} />)
         ) : (
