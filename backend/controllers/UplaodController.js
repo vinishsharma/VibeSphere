@@ -67,10 +67,17 @@ const deleteImage = async (req, res) => {
 
     // Delete from Cloudinary
     const result = await cloudinaryV2.uploader.destroy(publicId);
-    res.json({ success: true, message: "Image deleted successfully", result });
+    res.json({
+      success: true,
+      message: "Image deleted successfully",
+      result
+    });
   } catch (error) {
     console.error("Error deleting image:", error);
-    res.status(500).json({ error: "Failed to delete image" });
+    res.status(500).json({
+      success: false,
+      error: "Failed to delete image"
+    });
   }
 };
 

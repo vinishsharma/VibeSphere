@@ -139,7 +139,7 @@ const Profile = () => {
       if (!user?.posts?.length) return; // If no posts, exit early
 
       try {
-        const res = await axios.post("/api/post/getPostsByIds", { postIds: user.posts });
+        const res = await axios.post("/api/post/get-user-posts", { postIds: user.posts });
         setPosts(res.data.posts); // Assuming API returns { posts: [...] }
       } catch (err) {
         console.error("Error fetching posts:", err);

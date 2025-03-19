@@ -13,7 +13,7 @@ const PostCard = ({ post }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <video controls className="w-full h-full">
+          <video autoPlay muted loop className="object-cover h-full">
             <source src={post.media.url} type="video/mp4" />
           </video>
         )}

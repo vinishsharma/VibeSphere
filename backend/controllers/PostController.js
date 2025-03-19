@@ -36,12 +36,59 @@ const createPost = async (req, res) => {
 const getPostsByIds = async (req, res) => {
   try {
     const { postIds } = req.body;
-    const posts = await Post.find({ _id: { $in: postIds } }).populate(); // Populate user details
-    res.json({ posts });
+    const posts = await Post.find({ _id: { $in: postIds } }).sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      message: "User Posts fetched successfully",
+      posts
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Error fetching posts" });
+    res.status(500).json({
+      message: "Error fetching user's posts",
+      success: false
+    });
   }
 }
 
-export { createPost, getPostsByIds }
+//Get all posts
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched all posts",
+      posts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch posts",
+    });
+  }
+};
+
+const getAllPostsExceptMy = async (req, res) => {
+  try {
+    const myId = req.user.id; // Get logged-in user's ID
+
+    const posts = await Post.find({ user: { $ne: myId } }) // Exclude user's own posts
+      // .populate("user", "name username ") // Populate user details
+      .sort({ createdAt: -1 }); // Sort by latest posts
+
+    res.status(200).json({
+      success: true,
+      message: "Posts fetched successfully",
+      posts
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching all posts except my"
+    });
+  }
+};
+
+export { createPost, getPostsByIds, getAllPosts, getAllPostsExceptMy }
