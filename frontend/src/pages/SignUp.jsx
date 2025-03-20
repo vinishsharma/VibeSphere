@@ -51,8 +51,10 @@ const SignUp = () => {
       navigate("/profile");
 
     } catch (err) {
+      // console.log(err.response.data.errors[0].message);
       setError(err.response?.data?.message || "Signup failed");
       toast.error(err.response?.data?.message || "Signup failed");
+      toast.error(err.response.data.errors[0].message);
     }
   };
 

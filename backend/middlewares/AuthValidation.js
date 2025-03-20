@@ -27,6 +27,7 @@ const validateSignup = (req, res, next) => {
     next();
   } catch (error) {
     res.status(400).json({ message: "Signup Validation failed", errors: error.errors });
+    console.log(error.errors);
   }
 };
 

@@ -62,7 +62,7 @@ const Explore = () => {
                   <img
                     src={post.media.url}
                     alt="Post"
-                    className=" h-full object-cover"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <video autoPlay muted loop className="h-full object-cover">

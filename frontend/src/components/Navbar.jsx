@@ -47,10 +47,10 @@ const Navbar = () => {
       {/* Mid Section: Home Liked Search */}
       {user && (
         <div className="flex gap-5">
-          <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
+          {/* <NavLink to="/" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-200 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <FaHome size={20} />
             <p>Home</p>
-          </NavLink>
+          </NavLink> */}
 
           <NavLink to="/create-post" className={({ isActive }) => `${isActive ? "border-b-2 border-b-[#163049] text-lg transition-all duration-100 ease-in-out" : ""} flex text-[#163049] items-center gap-1`}>
             <div className="border-black border-2 rounded-md w-5 h-5 flex items-center justify-center">
