@@ -34,8 +34,10 @@ const Login = () => {
       toast.success("Login Successful");
       navigate("/profile");
     } catch (err) {
+      // console.log(err.response.data);
       setError(err.response?.data?.message || "Login failed");
       toast.error(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.errors[0]?.message);
     }
   };
 
