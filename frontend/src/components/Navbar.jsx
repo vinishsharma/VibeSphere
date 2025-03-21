@@ -87,7 +87,7 @@ const Navbar = () => {
           <div ref={dropdownRef} className="relative">
             <button className="text-2xl cursor-pointer" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />}</button>
             {isMenuOpen && (
-              <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg ring-1 ring-gray-200 w-40">
+              <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg ring-1 ring-gray-200 w-40 z-10">
                 <ul className="">
                   <li>
                     <Link to="/profile" onClick={toggleMenu} className="flex items-center gap-6 hover:bg-gray-100 p-4 cursor-pointer w-full">
@@ -95,7 +95,7 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#" onClick={toggleMenu} className="flex items-center gap-6 hover:bg-gray-100 p-4 cursor-pointer w-full">
+                    <Link to="/setting" onClick={toggleMenu} className="flex items-center gap-6 hover:bg-gray-100 p-4 cursor-pointer w-full">
                       <FaCog size="20" /> <p>Setting</p>
                     </Link>
                   </li>

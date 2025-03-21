@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/create', isLoggedIn, createPost);
 router.post('/get-user-posts', isLoggedIn, getPostsByIds);
-router.get('/get-all-posts', isLoggedIn, getAllPosts);
+router.get('/get-all', isLoggedIn, getAllPosts);
 router.get('/get-all-except-my', isLoggedIn, getAllPostsExceptMy);
 
 export default router;

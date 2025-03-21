@@ -15,6 +15,7 @@ import SearchUser from './pages/SearchUser.jsx'
 import Explore from './pages/Explore.jsx'
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Setting from './pages/Setting.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/search-user" element={<SearchUser />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/setting" element={<Setting />} />
       </Route>
     </Route>
   )

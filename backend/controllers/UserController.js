@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Post from '../models/post.model.js';
 
 
 // Edit Profile Controller
@@ -34,6 +35,45 @@ const editProfile = async (req, res) => {
     res.status(500).json({
       message: "Server error",
       success: false
+    });
+  }
+};
+
+//Controller to delete a user
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming user is authenticated and ID is in req.user
+
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Delete all posts created by the user
+    await Post.deleteMany({ user: userId });
+
+    // Remove user from followers' following lists
+    await User.updateMany({ following: userId }, { $pull: { following: userId } });
+
+    // Remove user from following users' followers lists
+    await User.updateMany({ followers: userId }, { $pull: { followers: userId } });
+
+    // Remove the user's likes from all posts
+    await Post.updateMany({ likes: userId }, { $pull: { likes: userId } });
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "User Account deleted successfully"
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete user"
     });
   }
 };
