@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import SearchBar from '../components/SearchBar';
-import { FaSearch } from 'react-icons/fa';
+import { FaImage } from 'react-icons/fa';
 import axios from 'axios';
 
 const Explore = () => {
@@ -73,9 +73,12 @@ const Explore = () => {
             ))
           ) : (
             <div className="col-span-full flex items-center justify-center min-h-[50vh]">
-              <p className="text-lg font-semibold text-gray-400 flex items-center gap-2">
-                No Posts Found
-              </p>
+              <div className='flex justify-center flex-col items-center'>
+                <FaImage size={100} className="mb-2 text-gray-200" />
+                <p className="text-center text-lg font-semibold flex items-center gap-2 text-gray-400">
+                  No Posts Found
+                </p>
+              </div>
             </div>
           )}
         </div>

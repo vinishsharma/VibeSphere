@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle } from "react-icons/fa";
+import { FaUserFriends, FaImages, FaHeart, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle, FaCamera, FaPlus } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import ProfileEditForm from "../components/ProfileEditForm";
 import { toast } from "react-toastify";
-import ProfilePostCard from "../components/ProfilePostCard"
+import ProfilePostCard from "../components/ProfilePostCard";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -228,7 +229,22 @@ const Profile = () => {
         {posts.length > 0 ? (
           posts.map((post) => <ProfilePostCard key={post._id} post={post} />)
         ) : (
-          <p className="text-center col-span-3 text-gray-500">No posts found.</p>
+          <div className="col-span-3 text-gray-500">
+            <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">
+              <div className='border-2 w-28 h-28 flex items-center justify-center border-gray-200 rounded-full mb-2'>
+                <FaCamera size={60} className=" text-gray-200" />
+              </div>
+              <p className="text-center text-lg font-semibold mb-4">
+                No Posts Yet
+              </p>
+              <p className="text-center text-md font-semibold flex items-center gap-2">
+                <div className="border-gray-400 border-2 rounded-md w-5 h-5 flex items-center justify-center">
+                  <FaPlus size={12} />
+                </div>
+                Create your first post...<Link to='/create-post' className="text-blue-600">Create</Link>
+              </p>
+            </div>
+          </div>
         )}
       </div>
 

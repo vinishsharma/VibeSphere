@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SearchBar from '../components/SearchBar'
 import axios from 'axios';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaUser } from 'react-icons/fa';
 import UserBar from '../components/UserBar';
 
 const SearchUser = () => {
@@ -55,10 +55,13 @@ const SearchUser = () => {
               <UserBar key={curUser._id} user={curUser} />
             ))
           ) : (
-            <p className="text-center text-lg font-semibold text-gray-400 flex items-center justify-center gap-2 mt-50">
-              <FaSearch className="text-gray-400" />
-              Search users by <span className="text-blue-600">Username</span> or <span className="text-blue-600">Name</span>...
-            </p>
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-gray-400">
+              <FaUser size={100} className="mb-6 text-gray-200" />
+              <p className="text-center text-lg font-semibold flex items-center gap-2">
+                <FaSearch />
+                Search users by <span className="text-blue-600">Username</span> or <span className="text-blue-600">Name</span>...
+              </p>
+            </div>
           )}
         </div>
       </div>

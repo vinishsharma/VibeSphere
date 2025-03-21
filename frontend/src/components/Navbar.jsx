@@ -74,11 +74,13 @@ const Navbar = () => {
       {/* Right Section: Logged In user profile*/}
       {user && (
         <div className="flex items-center">
-          <img
-            src={user.profilePicture || "profile.jpg"}
-            alt="Profile"
-            className="h-10 w-10 rounded-full border border-gray-300 object-cover"
-          />
+          <Link to="/profile">
+            <img
+              src={user.profilePicture || "profile.jpg"}
+              alt="Profile"
+              className="h-10 w-10 rounded-full border border-gray-300 object-cover"
+            />
+          </Link>
           {/* Display first name of logged-in user */}
           <div className="px-4 text-xl">{user.name.split(" ")[0]}</div>
 
