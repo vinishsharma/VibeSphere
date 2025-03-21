@@ -4,12 +4,23 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 const Setting = () => {
-  const [isPrivate, setIsPrivate] = useState(false);
-  const { logout } = useAuth();
+  const { user, setUser, logout } = useAuth();
 
-  const handleTogglePrivacy = () => {
-    setIsPrivate(!isPrivate);
-    // TODO: Send update request to backend
+  const handleTogglePrivacy = async () => {
+    try {
+      const response = await axios.put("/api/user/toggle-privacy");
+
+      // Update AuthContext with the new privacy setting
+      setUser((prevUser) => ({
+        ...prevUser,
+        isAccountPrivate: response.data.isAccountPrivate,
+      }));
+
+      toast.success(`Your account is now ${response.data.isAccountPrivate ? "Private" : "Public"}`);
+    } catch (error) {
+      console.error("Error updating privacy:", error);
+      toast.error(response.data.error.message || "Error updating privacy");
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -52,12 +63,12 @@ const Setting = () => {
           <input
             type="checkbox"
             className="sr-only peer"
-            checked={isPrivate}
+            checked={user.isAccountPrivate}
             onChange={handleTogglePrivacy}
           />
           <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors relative">
             <div
-              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all transform ${isPrivate ? "translate-x-6" : "translate-x-0"
+              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all transform ${user.isAccountPrivate ? "translate-x-6" : "translate-x-0"
                 }`}
             ></div>
           </div>

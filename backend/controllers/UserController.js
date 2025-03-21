@@ -40,9 +40,9 @@ const editProfile = async (req, res) => {
 };
 
 //Controller to delete a user
-export const deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming user is authenticated and ID is in req.user
+    const userId = req.user.id;
 
     // Find the user
     const user = await User.findById(userId);
@@ -75,6 +75,31 @@ export const deleteUser = async (req, res) => {
       success: false,
       message: "Failed to delete user"
     });
+  }
+};
+
+//toggle user privacy controller
+const togglePrivacy = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Find the user and toggle the isAccountPrivate field
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.isAccountPrivate = !user.isAccountPrivate; // Toggle privacy setting
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Account privacy updated successfully",
+      isAccountPrivate: user.isAccountPrivate
+    });
+  } catch (error) {
+    console.error("Error toggling account privacy:", error);
+    res.status(500).json({ success: false, message: "Failed to update account privacy" });
   }
 };
 
@@ -120,4 +145,4 @@ const getAllUsersExceptMe = async (req, res) => {
 };
 
 
-export { editProfile, getAllUsers, getAllUsersExceptMe };
+export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy };
