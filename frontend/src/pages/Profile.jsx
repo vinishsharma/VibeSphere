@@ -237,12 +237,12 @@ const Profile = () => {
               <p className="text-center text-lg font-semibold mb-4">
                 No Posts Yet
               </p>
-              <p className="text-center text-md font-semibold flex items-center gap-2">
+              <div className="text-center text-md font-semibold flex items-center gap-2">
                 <div className="border-gray-400 border-2 rounded-md w-5 h-5 flex items-center justify-center">
                   <FaPlus size={12} />
                 </div>
                 Create your first post...<Link to='/create-post' className="text-blue-600">Create</Link>
-              </p>
+              </div>
             </div>
           </div>
         )}
