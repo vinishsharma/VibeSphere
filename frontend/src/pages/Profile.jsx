@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import ProfileEditForm from "../components/ProfileEditForm";
 import { toast } from "react-toastify";
-import PostCard from "../components/PostCard"
+import ProfilePostCard from "../components/ProfilePostCard"
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -226,7 +226,7 @@ const Profile = () => {
       {/* Posts Section */}
       <div className="grid grid-cols-3 gap-4 mt-12">
         {posts.length > 0 ? (
-          posts.map((post) => <PostCard key={post._id} post={post} />)
+          posts.map((post) => <ProfilePostCard key={post._id} post={post} />)
         ) : (
           <p className="text-center col-span-3 text-gray-500">No posts found.</p>
         )}
