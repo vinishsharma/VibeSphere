@@ -7,7 +7,7 @@ import Home from './pages/Home.jsx'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
-import Profile from './pages/Profile.jsx'
+import MyProfile from './pages/MyProfile.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import PrivateRoute from './routes/PrivateRoute.jsx'
 import CreatePost from './pages/CreatePost.jsx'
@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<SignUp />} />
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<MyProfile />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/search-user" element={<SearchUser />} />
         <Route path="/explore" element={<Explore />} />

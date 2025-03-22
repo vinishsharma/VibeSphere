@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import ProfilePostCard from "../components/ProfilePostCard";
 import { Link } from "react-router-dom";
 
-const Profile = () => {
+const MyProfile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
@@ -266,5 +266,5 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default MyProfile;
 
