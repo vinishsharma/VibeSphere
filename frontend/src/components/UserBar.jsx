@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserBar = ({ user }) => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate(`/profile/${user._id}`); // Navigate to user profile page
+  }
+
   return (
     <div className="flex items-center justify-between p-3 px-5 rounded-lg shadow-md bg-gray ring-1 ring-gray-100 mb-4">
       {/* Profile Image */}
@@ -23,7 +30,7 @@ const UserBar = ({ user }) => {
         <button className="px-4 py-1 bg-white border-2 border-gray-800 text-gray-800 rounded-lg hover:bg-blue-600 hover:border-blue-600 cursor-pointer hover:text-white">
           Follow
         </button>
-        <button className="px-4 py-1 bg-white border-2 border-gray-800 text-gray-800 rounded-lg hover:bg-blue-600 hover:border-blue-600 cursor-pointer hover:text-white">
+        <button className="px-4 py-1 bg-white border-2 border-gray-800 text-gray-800 rounded-lg hover:bg-blue-600 hover:border-blue-600 cursor-pointer hover:text-white" onClick={handleViewProfile}>
           View
         </button>
 

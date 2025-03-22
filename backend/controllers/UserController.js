@@ -39,6 +39,7 @@ const editProfile = async (req, res) => {
   }
 };
 
+
 //Controller to delete a user
 const deleteUser = async (req, res) => {
   try {
@@ -78,6 +79,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
 //toggle user privacy controller
 const togglePrivacy = async (req, res) => {
   try {
@@ -103,6 +105,7 @@ const togglePrivacy = async (req, res) => {
   }
 };
 
+
 //Get all users controller
 const getAllUsers = async (req, res) => {
   try {
@@ -121,6 +124,7 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
+
 
 //Controller to fetch all users except logged-in
 const getAllUsersExceptMe = async (req, res) => {
@@ -145,4 +149,37 @@ const getAllUsersExceptMe = async (req, res) => {
 };
 
 
-export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy };
+//controller to get user by id
+const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params; // Get user ID from request params
+
+    // Find user by ID, populate posts, and exclude password
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate({
+        path: "posts",
+        model: Post,
+        select: "caption media likes comments createdAt", // Only select necessary fields
+      });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User Data Fetched Successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+}
+
+
+export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById };

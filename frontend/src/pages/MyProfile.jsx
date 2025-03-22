@@ -7,6 +7,7 @@ import ProfileEditForm from "../components/ProfileEditForm";
 import { toast } from "react-toastify";
 import ProfilePostCard from "../components/ProfilePostCard";
 import { Link } from "react-router-dom";
+import { changeDateFormat } from "../utils/helper";
 
 const MyProfile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -122,16 +123,6 @@ const MyProfile = () => {
     setIsEditing(false);
     setProfilePicURL(""); // Restore old image
     setFormData((prev) => ({ ...prev, profilePicture: prev.previousProfilePic || "" }));
-  };
-
-  //Format the date before displaying
-  const changeDateFormat = (isoDate) => {
-    if (!isoDate) return "Invalid Date";
-
-    const date = new Date(isoDate);
-    const options = { day: "numeric", month: "short", year: "numeric" };
-
-    return date.toLocaleDateString("en-GB", options); // Example: "1 Jan 2000"
   };
 
   //Fetch user's all posts
