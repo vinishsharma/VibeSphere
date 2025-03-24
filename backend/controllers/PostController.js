@@ -52,6 +52,25 @@ const getPostsByIds = async (req, res) => {
   }
 }
 
+//Get all liked posts of logged-in user
+const getLikedPostsByIds = async (req, res) => {
+  try {
+    const { likedPostIds } = req.body;
+    const likedPosts = await Post.find({ _id: { $in: likedPostIds } }).sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      message: "User's Liked Posts fetched successfully",
+      likedPosts
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching user's liked posts",
+      success: false
+    });
+  }
+}
+
 //Get all posts
 const getAllPosts = async (req, res) => {
   try {
@@ -122,8 +141,9 @@ const likeUnlikePost = async (req, res) => {
 
     res.status(200).json({
       likes: post.likes,
+      likedPosts: user.likedPosts,  // Include user's liked posts
       success: true,
-      message: "Successfully liked the posts",
+      message: "Successfully liked the post",
     });
   } catch (error) {
     res.status(500).json({
@@ -133,4 +153,4 @@ const likeUnlikePost = async (req, res) => {
   }
 }
 
-export { createPost, getPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost }
+export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost }

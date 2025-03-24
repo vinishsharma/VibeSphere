@@ -18,6 +18,7 @@ const MyProfile = () => {
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useAuth();
   const [posts, setPosts] = useState([]);
+  const [likedPosts, setLikedPosts] = useState([]);
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
@@ -131,11 +132,11 @@ const MyProfile = () => {
       if (!user?.posts?.length) return; // If no posts, exit early
 
       try {
-        const res = await axios.post("/api/post/get-user-posts",
+        const response = await axios.post("/api/post/get-user-posts",
           { postIds: user.posts },
           { withCredentials: true }
         );
-        setPosts(res.data.posts); // Assuming API returns { posts: [...] }
+        setPosts(response.data.posts);
       } catch (err) {
         console.error("Error fetching posts:", err);
       }
@@ -143,6 +144,25 @@ const MyProfile = () => {
 
     fetchUserPosts();
   }, [user.posts]); // Runs when user.posts change
+
+  //Fetch user's liked posts
+  useEffect(() => {
+    const fetchUserLikedPosts = async () => {
+      if (!user?.likedPosts?.length) return; // If no posts, exit early
+
+      try {
+        const response = await axios.post("/api/post/get-user-liked-posts",
+          { likedPostIds: user.likedPosts },
+          { withCredentials: true }
+        );
+        setLikedPosts(response.data.likedPosts);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    };
+
+    fetchUserLikedPosts();
+  }, [user.likedPosts]); // Runs when user.likedPosts change
 
   return (
     <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
@@ -220,26 +240,42 @@ const MyProfile = () => {
 
       {/* Posts Section */}
       <div className="grid grid-cols-3 gap-4 mt-12">
-        {posts.length > 0 ? (
-          posts.map((post) => <ProfilePostCard key={post._id} post={post} />)
-        ) : (
-          <div className="col-span-3 text-gray-500">
-            <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">
-              <div className='border-2 w-28 h-28 flex items-center justify-center border-gray-200 rounded-full mb-2'>
-                <FaCamera size={60} className=" text-gray-200" />
-              </div>
-              <p className="text-center text-lg font-semibold mb-4">
-                No Posts Yet
-              </p>
-              <div className="text-center text-md font-semibold flex items-center gap-2">
-                <div className="border-gray-400 border-2 rounded-md w-5 h-5 flex items-center justify-center">
-                  <FaPlus size={12} />
+        {activeTab === "myPosts"
+          ? posts.length > 0
+            ? posts.map((post) => <ProfilePostCard key={post._id} post={post} />)
+            : (
+              <div className="col-span-3 text-gray-500">
+                <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">
+                  <div className='border-2 w-28 h-28 flex items-center justify-center border-gray-200 rounded-full mb-2'>
+                    <FaCamera size={60} className=" text-gray-200" />
+                  </div>
+                  <p className="text-center text-lg font-semibold mb-4">
+                    No Posts Yet
+                  </p>
+                  <div className="text-center text-md font-semibold flex items-center gap-2">
+                    <div className="border-gray-400 border-2 rounded-md w-5 h-5 flex items-center justify-center">
+                      <FaPlus size={12} />
+                    </div>
+                    Create your first post...<Link to='/create-post' className="text-blue-600">Create</Link>
+                  </div>
                 </div>
-                Create your first post...<Link to='/create-post' className="text-blue-600">Create</Link>
               </div>
-            </div>
-          </div>
-        )}
+            )
+          : likedPosts.length > 0
+            ? likedPosts.map((post) => <ProfilePostCard key={post._id} post={post} />)
+            : (
+              <div className="col-span-3 text-gray-500">
+                <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">
+                  <div className='border-2 w-28 h-28 flex items-center justify-center border-gray-200 rounded-full mb-2'>
+                    <FaHeart size={60} className=" text-gray-200" />
+                  </div>
+                  <p className="text-center text-lg font-semibold mb-4">
+                    No Liked Posts Yet
+                  </p>
+                </div>
+              </div>
+            )
+        }
       </div>
 
       {/* Floating Edit Profile Form */}

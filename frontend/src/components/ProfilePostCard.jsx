@@ -6,14 +6,21 @@ import { useAuth } from "../context/AuthContext";
 
 const ProfilePostCard = ({ post }) => {
   const [likes, setLikes] = useState(post.likes);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
-  const handleLike = async () => {
+  const handleLikeUnlike = async () => {
     try {
       const response = await axios.put(`/api/post/like/${post._id}`,
         {},
         { withCredentials: true }
       );
+
+      // Update AuthContext/user-data with the new likedPosts array without reloading
+      console.log(response.data.likedPosts);
+      setUser((prevUser) => ({
+        ...prevUser,
+        likedPosts: response.data.likedPosts,
+      }));
 
       setLikes(response.data.likes);
     } catch (error) {
@@ -50,7 +57,7 @@ const ProfilePostCard = ({ post }) => {
             </div>
           </Link>
           <div className="flex items-center gap-2 text-pink-500 text-md">
-            <button onClick={handleLike} className="cursor-pointer text-lg">
+            <button onClick={handleLikeUnlike} className="cursor-pointer text-lg">
               {likes.includes(user._id) ? <FaHeart /> : <FaRegHeart className="text-gray-200" />}
             </button>
             {likes.length} Likes
