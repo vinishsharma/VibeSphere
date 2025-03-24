@@ -1,7 +1,26 @@
-import React from "react";
-import { FaCalendarDay, FaComment, FaHeart } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaCalendarDay, FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const ProfilePostCard = ({ post }) => {
+  const [likes, setLikes] = useState(post.likes);
+  const { user } = useAuth();
+
+  const handleLike = async () => {
+    try {
+      const response = await axios.put(`/api/post/like/${post._id}`,
+        {},
+        { withCredentials: true }
+      );
+
+      setLikes(response.data.likes);
+    } catch (error) {
+      console.error("Error liking the post", error);
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border-1 border-gray-200">
       {/* Media (Image or Video) */}
@@ -25,11 +44,16 @@ const ProfilePostCard = ({ post }) => {
         <div className="py-2 font-bold truncate">{post.caption}</div>
         {/* Likes & Comments Count */}
         <div className="flex justify-between">
-          <div className="flex items-center gap-2 text-gray-500 text-lg font-semibold">
-            <FaHeart className="text-gray-400" /> {post.likes.length} Likes
-          </div>
-          <div className="flex items-center gap-2 text-gray-500 text-lg font-semibold">
-            <FaComment className="text-gray-400" /> {post.comments.length} Comments
+          <Link to='/'>
+            <div className="flex items-center gap-2 text-blue-500 text-md">
+              <FaComment className="text-blue-400" /> {post.comments.length} Comments
+            </div>
+          </Link>
+          <div className="flex items-center gap-2 text-pink-500 text-md">
+            <button onClick={handleLike} className="cursor-pointer text-lg">
+              {likes.includes(user._id) ? <FaHeart /> : <FaRegHeart className="text-gray-200" />}
+            </button>
+            {likes.length} Likes
           </div>
         </div>
 

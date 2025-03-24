@@ -8,7 +8,10 @@ const Setting = () => {
 
   const handleTogglePrivacy = async () => {
     try {
-      const response = await axios.put("/api/user/toggle-privacy");
+      const response = await axios.put("/api/user/toggle-privacy",
+        {},
+        { withCredentials: true }
+      );
 
       // Update AuthContext with the new privacy setting without reloading
       setUser((prevUser) => ({

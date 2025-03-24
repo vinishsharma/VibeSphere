@@ -161,6 +161,10 @@ const getUserById = async (req, res) => {
         path: "posts",
         model: Post,
         select: "caption media likes comments createdAt", // Only select necessary fields
+        // populate: {
+        //   path: "user",
+        //   select: "name username profilePicture", // Populate user details inside posts
+        // },
       });
 
     if (!user) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { FaUserFriends, FaImages, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle, FaCamera } from "react-icons/fa";
+import { FaUserFriends, FaImages, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle, FaCamera, FaImage } from "react-icons/fa";
 import axios from "axios";
-import UserPostCard from '../components/UserPostCard'
+import ProfilePostCard from '../components/ProfilePostCard'
 import { changeDateFormat } from "../utils/helper";
 import { useParams } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
@@ -38,7 +38,15 @@ const UserProfile = () => {
               />
             </div>
             <div className="w-2/3">
-              <h2 className="text-2xl font-bold text-gray-700 mb-4">@{user.username}</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-gray-700">@{user.username}</h2>
+                <button
+                  className="px-4 py-1 bg-white text-blue-400 border-1 border-blue-400 rounded-lg cursor-pointer hover:bg-blue-400 hover:text-white"
+                // onClick={}
+                >
+                  Follow
+                </button>
+              </div>
               <div className="flex justify-center flex-row gap-20 mt-4 text-center">
                 <div>
                   <FaImages className="text-xl mx-auto" />
@@ -75,13 +83,17 @@ const UserProfile = () => {
 
         <hr className="my-10 w-[60%] mx-auto border-1 border-gray-300" />
 
+        <div className="flex justify-center mt-6 items-center gap-2 text-lg font-semibold text-gray-500">
+          <FaImage /> POSTS
+        </div>
+
         {/* Posts Section */}
-        <div className="grid grid-cols-3 gap-4 mt-12">
+        <div className="grid grid-cols-3 gap-4 mt-8">
           {user.posts.length > 0 ? (
             user.posts
               .slice() // Create a copy to avoid mutating original data
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt (newest first)
-              .map((post) => <UserPostCard key={post._id} post={post} />)
+              .map((post) => <ProfilePostCard key={post._id} post={post} />)
           ) : (
             <div className="col-span-3 text-gray-500">
               <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">

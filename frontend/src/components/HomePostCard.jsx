@@ -1,7 +1,7 @@
 import React from "react";
 import { FaCalendarDay, FaComment, FaHeart } from "react-icons/fa";
 
-const UserPostCard = ({ post }) => {
+const HomePostCard = ({ post }) => {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border-1 border-gray-200">
       {/* Media (Image or Video) */}
@@ -42,4 +42,4 @@ const UserPostCard = ({ post }) => {
   );
 };
 
-export default UserPostCard;
+export default HomePostCard;

@@ -33,6 +33,7 @@ const createPost = async (req, res) => {
   }
 }
 
+//Get all uploaded posts of logged-in user
 const getPostsByIds = async (req, res) => {
   try {
     const { postIds } = req.body;
@@ -69,6 +70,7 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+//Get all posts except the logged-in user's posts
 const getAllPostsExceptMy = async (req, res) => {
   try {
     const myId = req.user.id; // Get logged-in user's ID
@@ -91,4 +93,44 @@ const getAllPostsExceptMy = async (req, res) => {
   }
 };
 
-export { createPost, getPostsByIds, getAllPosts, getAllPostsExceptMy }
+const likeUnlikePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user.id;
+
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Check if user already liked the post
+    const likedIndex = post.likes.indexOf(userId);
+
+    if (likedIndex === -1) {
+      // Like the post
+      post.likes.push(userId);
+      user.likedPosts.push(postId);
+    } else {
+      // Unlike the post
+      post.likes.splice(likedIndex, 1);
+      user.likedPosts = user.likedPosts.filter((id) => id.toString() !== postId);
+    }
+
+    await post.save();
+    await user.save();
+
+    res.status(200).json({
+      likes: post.likes,
+      success: true,
+      message: "Successfully liked the posts",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+export { createPost, getPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost }
