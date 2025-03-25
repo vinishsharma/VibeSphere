@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import Post from '../models/post.model.js';
-
+import bcrypt from 'bcrypt';
 
 // Edit Profile Controller
 const editProfile = async (req, res) => {
@@ -11,7 +11,7 @@ const editProfile = async (req, res) => {
     // Check if the new username is already taken by another user
     const usernameExists = await User.findOne({ username, _id: { $ne: userId } });
     if (usernameExists) {
-      return res.status(409).json({ message: "Username already taken" });
+      return res.status(409).json({ success: false, message: "Username already taken" });
     }
 
     // Update user profile
@@ -22,7 +22,7 @@ const editProfile = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     res.status(200).json({
@@ -185,5 +185,48 @@ const getUserById = async (req, res) => {
   }
 }
 
+//controller to update password
+const updatePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id; // Get user from auth middleware
 
-export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById };
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    // Find user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Compare old password with stored hash
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Incorrect old password" });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully"
+    });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+}
+
+
+export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById, updatePassword };

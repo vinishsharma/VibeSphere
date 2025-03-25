@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaCalendarDay, FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaCalendarDay, FaComment } from "react-icons/fa";
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -56,9 +57,9 @@ const ProfilePostCard = ({ post }) => {
               <FaComment className="text-blue-400" /> {post.comments.length} Comments
             </div>
           </Link>
-          <div className="flex items-center gap-2 text-pink-500 text-md">
-            <button onClick={handleLikeUnlike} className="cursor-pointer text-lg">
-              {likes.includes(user._id) ? <FaHeart /> : <FaRegHeart className="text-gray-200" />}
+          <div className="flex items-center gap-1 text-[#f44336] text-md">
+            <button onClick={handleLikeUnlike} className="cursor-pointer text-xl">
+              {likes.includes(user._id) ? <FcLike /> : <FcLikePlaceholder className="text-gray-200" />}
             </button>
             {likes.length} Likes
           </div>

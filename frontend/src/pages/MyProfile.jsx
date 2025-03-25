@@ -225,13 +225,13 @@ const MyProfile = () => {
       {/* Toggle Buttons for Posts */}
       <div className="flex justify-center gap-6 mt-6">
         <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg ${activeTab === "myPosts" ? "bg-blue-400 text-white" : "bg-gray-200"}`}
+          className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg ${activeTab === "myPosts" ? "bg-blue-400 text-white" : "bg-gray-200"}`}
           onClick={() => setActiveTab("myPosts")}
         >
           <FaImages /> My Posts
         </button>
         <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg ${activeTab === "likedPosts" ? "bg-blue-400 text-white" : "bg-gray-200"}`}
+          className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg ${activeTab === "likedPosts" ? "bg-blue-400 text-white" : "bg-gray-200"}`}
           onClick={() => setActiveTab("likedPosts")}
         >
           <FaHeart /> Liked Posts
