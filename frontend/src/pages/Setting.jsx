@@ -72,6 +72,11 @@ const Setting = () => {
     }
   };
 
+  const handleCancel = () => {
+    setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" });
+    setIsChangePass(false);
+  }
+
   return (
     <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
@@ -185,14 +190,12 @@ const Setting = () => {
               </label>
               <div className="flex justify-between">
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Update</button>
-                <button type="button" onClick={() => { setIsChangePass(false) }} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
+                <button type="button" onClick={handleCancel} className="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer hover:opacity-100 opacity-80">Cancel</button>
               </div>
             </form>
           </div>
         </div>
       }
-
-
     </div>
   );
 };
