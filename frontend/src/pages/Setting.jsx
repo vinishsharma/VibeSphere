@@ -69,6 +69,7 @@ const Setting = () => {
       setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" }); // Reset form after success
     } catch (error) {
       toast.error(error.response?.data?.message || "Error updating password");
+      toast.error(error.response.data.errors[0].message);
     }
   };
 

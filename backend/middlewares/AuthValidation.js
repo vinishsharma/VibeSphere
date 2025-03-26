@@ -48,4 +48,20 @@ const validateLogin = (req, res, next) => {
   }
 };
 
-export { validateSignup, validateLogin };
+const validatePassChange = (req, res, next) => {
+  const passChangeSchema = z.object({
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .max(100, "Password must not exceed 100 characters"),
+  });
+
+  try {
+    passChangeSchema.parse(req.body);
+    next();
+  } catch (error) {
+    res.status(400).json({ message: "Validation failed", errors: error.errors });
+  }
+}
+
+export { validateSignup, validateLogin, validatePassChange };
