@@ -30,7 +30,7 @@ const ProfilePostCard = ({ post }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden border-1 border-gray-200">
+    <div className="bg-white shadow-md rounded-lg overflow-hidden border-1 border-gray-200 transition-transform transform hover:scale-105">
       {/* Media (Image or Video) */}
       <div className="w-full h-64 border-b-1 border-gray-300">
         {post.media.type === "image" ? (
