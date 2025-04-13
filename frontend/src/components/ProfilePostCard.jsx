@@ -17,7 +17,6 @@ const ProfilePostCard = ({ post }) => {
       );
 
       // Update AuthContext/user-data with the new likedPosts array without reloading
-      console.log(response.data.likedPosts);
       setUser((prevUser) => ({
         ...prevUser,
         likedPosts: response.data.likedPosts,

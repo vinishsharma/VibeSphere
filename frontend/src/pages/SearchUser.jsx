@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SearchBar from '../components/SearchBar'
 import axios from 'axios';
 import { FaSearch, FaUser } from 'react-icons/fa';
-import UserBar from '../components/UserBar';
+import UserBar from '../components/UserBar.jsx';
 
 const SearchUser = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,7 +52,7 @@ const SearchUser = () => {
         <div className="mt-8">
           {filteredUsers.length > 0 ? (
             filteredUsers.map(curUser => (
-              <UserBar key={curUser._id} user={curUser} />
+              <UserBar key={curUser._id} targetUser={curUser} />
             ))
           ) : (
             <div className="flex flex-col items-center justify-center min-h-[50vh] text-gray-400">

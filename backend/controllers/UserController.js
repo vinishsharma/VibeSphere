@@ -228,5 +228,61 @@ const updatePassword = async (req, res) => {
   }
 }
 
+//controller to follow unfollow user
+const followUnfollowUser = async (req, res) => {
+  try {
+    const myId = req.user.id;       //logged-in user id from auth middleware
+    const { userId } = req.params;  // target user to follow/unfollow
 
-export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById, updatePassword };
+    if (myId === userId) {
+      return res.status(400).json({ message: "You can't follow yourself." });
+    }
+
+    const me = await User.findById(myId);
+    const targetUser = await User.findById(userId);
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const isFollowing = me.following.includes(userId);
+
+    if (isFollowing) {
+      // Unfollow logic
+      me.following.pull(userId);
+      targetUser.followers.pull(myId);
+      await me.save();
+      await targetUser.save();
+
+      return res.status(200).json({
+        message: "User unfollowed successfully.",
+        success: true,
+        myFollowing: me.following,
+        tuFollowers: targetUser.followers
+      });
+    }
+    else {
+      // Follow logic
+      me.following.push(userId);
+      targetUser.followers.push(myId);
+      await me.save();
+      await targetUser.save();
+
+      return res.status(200).json({
+        message: "User followed successfully.",
+        success: true,
+        myFollowing: me.following,
+        tuFollowers: targetUser.followers
+      });
+    }
+  } catch (error) {
+    console.error("Follow/Unfollow Error:", error);
+    res.status(500).json({
+      message: "Server error. Please try again later.",
+      success: false
+    });
+  }
+}
+
+
+export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById, updatePassword, followUnfollowUser };
