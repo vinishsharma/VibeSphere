@@ -4,7 +4,7 @@ import User from '../models/user.model.js';
 const createPost = async (req, res) => {
   try {
     const { caption, media, tags } = req.body;
-    const userId = req.user.id; // Assuming `req.user` is populated via authentication middleware
+    const userId = req.user.id; // `req.user` is populated via authentication middleware
 
     if (!media || media.length === 0) {
       return res.status(400).json({ message: "At least one media file is required." });
@@ -153,4 +153,29 @@ const likeUnlikePost = async (req, res) => {
   }
 }
 
-export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost }
+const getFollowingsPosts = async (req, res) => {
+  try {
+    const userId = req.user.id; // Get logged-in user's ID
+    const user = await User.findById(userId).populate('following'); // Populate following users
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const followings = user.following.map(follow => follow._id); // Get IDs of following users
+    const posts = await Post.find({ user: { $in: followings } }) // Find posts by following users
+      .populate("user", "name username profilePicture") // Populate user details
+      .sort({ createdAt: -1 }); // Sort by latest posts
+    res.status(200).json({
+      success: true,
+      message: "Followings' posts fetched successfully",
+      posts
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching followings' posts"
+    });
+  }
+}
+
+export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts }

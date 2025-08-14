@@ -30,7 +30,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center sticky top-0 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto`}>
+    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto`}>
 
       {/* Left Section: Logo & Name */}
       <Link to='/'>
@@ -87,7 +87,7 @@ const Navbar = () => {
           <div ref={dropdownRef} className="relative">
             <button className="text-2xl cursor-pointer" onClick={toggleMenu}>{isMenuOpen ? <FaTimes /> : <FaBars />}</button>
             {isMenuOpen && (
-              <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg ring-1 ring-gray-200 w-40 z-10">
+              <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg ring-1 ring-gray-200 w-40 z-[9999]">
                 <ul className="">
                   <li>
                     <Link to="/profile" onClick={toggleMenu} className="flex items-center gap-6 hover:bg-gray-100 p-4 cursor-pointer w-full">
