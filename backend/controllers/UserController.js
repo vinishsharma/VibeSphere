@@ -284,5 +284,44 @@ const followUnfollowUser = async (req, res) => {
   }
 }
 
+//Get all followers of logged-in user
+const getFollowersByIds = async (req, res) => {
+  try {
+    const { followersIds } = req.body;
+    const followers = await User.find({ _id: { $in: followersIds } }).sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      message: "User Followers fetched successfully",
+      followers
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching user's followers",
+      success: false
+    });
+  }
+}
 
-export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById, updatePassword, followUnfollowUser };
+//Get all followings of logged-in user
+const getFollowingsByIds = async (req, res) => {
+  try {
+    const { followingsIds } = req.body;
+    const followings = await User.find({ _id: { $in: followingsIds } }).sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      message: "User Followings fetched successfully",
+      followings
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching user's followings",
+      success: false
+    });
+  }
+}
+
+
+
+export { editProfile, getAllUsers, getAllUsersExceptMe, deleteUser, togglePrivacy, getUserById, updatePassword, followUnfollowUser, getFollowersByIds, getFollowingsByIds };

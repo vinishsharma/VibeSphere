@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import ProfilePostCard from "../components/ProfilePostCard";
 import { Link } from "react-router-dom";
 import { changeDateFormat } from "../utils/helper";
+import ProfileFollowersList from "../components/ProfileFollowersList";
+import ProfileFollowingsList from "../components/ProfileFollowingsList";
 
 const MyProfile = () => {
   const [activeTab, setActiveTab] = useState("myPosts");
@@ -19,6 +21,8 @@ const MyProfile = () => {
   const { user, setUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
+  const [displayFollowers, setDisplayFollowers] = useState(false);
+  const [displayFollowings, setDisplayFollowings] = useState(false);
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
@@ -195,12 +199,12 @@ const MyProfile = () => {
               <div>
                 <FaUserFriends className="text-xl mx-auto" />
                 <p className="font-bold">{user.followers.length}</p>
-                <p className="text-gray-600">Followers</p>
+                <p onClick={() => setDisplayFollowers(true)} className="text-gray-600 cursor-pointer">Followers</p>
               </div>
               <div>
                 <FaUserFriends className="text-xl mx-auto" />
                 <p className="font-bold">{user.following.length}</p>
-                <p className="text-gray-600">Following</p>
+                <p onClick={() => setDisplayFollowings(true)} className="text-gray-600 cursor-pointer">Following</p>
               </div>
             </div>
             <h2 className="text-2xl font-bold">{user.name}</h2>
@@ -290,6 +294,22 @@ const MyProfile = () => {
           setProfilePicURL={setProfilePicURL}
           handleInputChange={handleInputChange}
           handleCancel={handleCancel}
+        />
+      )}
+
+      {/* Floating Followers List */}
+      {displayFollowers && (
+        <ProfileFollowersList
+          user={user}
+          setDisplayFollowers={setDisplayFollowers}
+        />
+      )}
+
+      {/* Floating Followings List */}
+      {displayFollowings && (
+        <ProfileFollowingsList
+          user={user}
+          setDisplayFollowings={setDisplayFollowings}
         />
       )}
     </div>

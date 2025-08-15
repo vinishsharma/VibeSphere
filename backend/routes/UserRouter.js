@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUser, editProfile, getAllUsers, getAllUsersExceptMe, togglePrivacy, getUserById, updatePassword, followUnfollowUser } from "../controllers/UserController.js";
+import { deleteUser, editProfile, getAllUsers, getAllUsersExceptMe, togglePrivacy, getUserById, updatePassword, followUnfollowUser, getFollowersByIds, getFollowingsByIds } from "../controllers/UserController.js";
 import { isLoggedIn } from "../middlewares/AuthMidware.js";
 import { validatePassChange } from "../middlewares/AuthValidation.js";
 
@@ -13,5 +13,7 @@ router.put('/toggle-privacy', isLoggedIn, togglePrivacy);
 router.get('/profile/:userId', isLoggedIn, getUserById);
 router.put('/update-password', isLoggedIn, validatePassChange, updatePassword);
 router.put('/follow/:userId', isLoggedIn, followUnfollowUser);
+router.post('/get-my-followers', isLoggedIn, getFollowersByIds);
+router.post('/get-my-followings', isLoggedIn, getFollowingsByIds);
 
 export default router
