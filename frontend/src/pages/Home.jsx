@@ -29,7 +29,7 @@ const Home = () => {
             followingsPosts.map((post) => (
               <div
                 key={post._id}
-                className="flex-none w-[30vw] snap-center snap-always hover:scale-100 transition-transform duration-200 ease-in-out scale-95"
+                className="flex-none w-[100vw] sm:w-[50vw] md:w-[40vw] lg:w-[30vw] snap-center snap-always hover:scale-100 transition-transform duration-200 ease-in-out scale-95"
               >
                 <HomePostCard post={post} />
               </div>

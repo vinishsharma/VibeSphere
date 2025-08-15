@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { FaCalendarDay, FaComment, FaHeart } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 
 const HomePostCard = ({ post }) => {
+  const navigate = useNavigate();
   const [likes, setLikes] = useState(post.likes);
   const { user, setUser } = useAuth();
 
@@ -29,11 +31,15 @@ const HomePostCard = ({ post }) => {
     }
   };
 
+  const handleViewProfile = () => {
+    navigate(`/profile/${post.user._id}`);
+  };
+
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border-1 border-gray-200 w-full z-0">
 
       {/* User Info */}
-      <div className="flex items-center p-3 border-b-1 border-gray-300">
+      <div onClick={handleViewProfile} className="flex items-center p-3 border-b-1 border-gray-300 cursor-pointer">
         <img
           src={post.user.profilePicture}
           alt={post.user.name}

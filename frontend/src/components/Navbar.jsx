@@ -30,7 +30,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto`}>
+    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-[w-full] md:w-[80%] lg:w-[70%] mx-auto`}>
 
       {/* Left Section: Logo & Name */}
       <Link to='/'>
