@@ -9,7 +9,8 @@ const PostSchema = new mongoose.Schema(
     },
     caption: {
       type: String,
-      maxlength: 100,
+      maxlength: 1000, // Limit caption length to 1000 characters
+      trim: true, // Remove leading and trailing whitespace
       default: "",
       required: true,
     },

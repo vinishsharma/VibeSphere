@@ -94,6 +94,11 @@ const CreatePost = () => {
       return;
     }
 
+    if (caption.length > 1000) {
+      setError("Caption cannot exceed 1000 characters");
+      return;
+    }
+
     if (!media.url || !media.type) {
       setError("Please upload an image or video");
       return;

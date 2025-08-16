@@ -27,7 +27,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-full flex justify-center min-h-[90vh] py-10">
+    <div className="w-full flex justify-center min-h-[90vh] py-10 ">
       {/* Fixed-width container */}
       <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%]">
         <div className="flex overflow-x-auto gap-5 scroll-smooth no-scrollbar snap-x snap-mandatory">
