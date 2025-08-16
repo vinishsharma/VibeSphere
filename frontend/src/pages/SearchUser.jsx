@@ -47,7 +47,7 @@ const SearchUser = () => {
   };
 
   return (
-    <div className='py-10 mx-auto w-full sm:w-[90%] md:w-[80%] lg:w-[70%]'>
+    <div className='py-10 mx-auto w-full sm:w-[90%] md:w-[80%] lg:w-[70%] min-h-[90vh] bg-white px-4'>
       <div className='flex justify-center'>
         <SearchBar
           placeholder={"Search Users..."}

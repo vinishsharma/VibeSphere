@@ -30,12 +30,12 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-[w-full] md:w-[80%] lg:w-[70%] mx-auto`}>
+    <nav className={`bg-white shadow-md px-4 py-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-[w-full] md:w-[80%] lg:w-[70%] mx-auto h-[10vh] z-10`}>
 
       {/* Left Section: Logo & Name */}
       <Link to='/'>
         <div className="flex items-center space-x-2">
-          <img src="/logo/mainLogo.svg" alt="VibeSphere Logo" className="h-auto w-16" />
+          <img src="/logo/mainLogo.svg" alt="VibeSphere Logo" className="h-auto w-[7vh]" />
           <div className="">
             <h1 className="alata-regular text-3xl font-semibold text-[#163049]">VibeSphere</h1>
             <p className="aclonica-regular text-sm text-[#163049]">your moments, your vibe</p>

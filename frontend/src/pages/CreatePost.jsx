@@ -133,7 +133,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="w-[70%] mx-auto py-10 min-h-screen">
+    <div className="w-[70%] mx-auto py-10 min-h-[90vh] bg-white">
       <h2 className="text-3xl font-bold mb-6 text-center text-[#163049]">Create a Post</h2>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-3/4 mx-auto">

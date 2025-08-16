@@ -31,6 +31,7 @@ const router = createBrowserRouter(
         <Route path="/explore" element={<Explore />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/profile/:userId" element={<UserProfile />} />
+        <Route path="/post/:postId" element={<PostDisplay />} />
       </Route>
     </Route>
   )

@@ -42,7 +42,7 @@ const Explore = () => {
 
   return (
     <>
-      <div className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] min-h-screen mx-auto py-10 '>
+      <div className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] min-h-[90vh] mx-auto py-10 bg-white px-2'>
         <div className='flex justify-center'>
           <SearchBar
             placeholder={"Search Posts..."}

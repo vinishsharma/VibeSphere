@@ -59,7 +59,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
+      <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10 min-h-[90vh] bg-white px-2">
         {/* Profile Header */}
         <div>
           <div className="flex items-center w-full">

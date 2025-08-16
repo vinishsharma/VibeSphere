@@ -79,8 +79,8 @@ const Setting = () => {
   }
 
   return (
-    <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
+    <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10 min-h-[90vh] bg-white px-2">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Settings</h2>
 
       {/* Edit Your Password */}
       <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-6 ring-1 ring-gray-100 shadow-md">
