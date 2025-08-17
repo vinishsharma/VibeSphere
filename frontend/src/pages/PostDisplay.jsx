@@ -27,7 +27,7 @@ const PostDisplay = () => {
         const response = await axios.get(`/api/post/get-post/${postId}`, {
           withCredentials: true,
         });
-        console.log(response.data.post); // Log the fetched post data
+
         setPost(response.data.post);
         setLikes(response.data.post.likes);
       } catch (error) {

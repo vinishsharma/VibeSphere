@@ -48,7 +48,7 @@ const SignUp = () => {
 
   return (
     // THEME CHANGE: Full-page animated gradient background
-    <div className="flex items-center justify-center w-full min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-x p-4">
+    <div className="flex items-center justify-center w-full min-h-screen p-4 animate-gradient-x">
       <motion.div
         className="w-full max-w-md bg-white/60 backdrop-blur-lg p-8 rounded-2xl shadow-2xl shadow-purple-200/50 ring-1 ring-purple-200"
         initial={{ y: -50, opacity: 0 }}
