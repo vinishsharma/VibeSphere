@@ -180,27 +180,30 @@ const getFollowingsPosts = async (req, res) => {
 
 const getPostById = async (req, res) => {
   try {
-    const { postId } = req.params; // Get post ID from request params
+    const { postId } = req.params; // Extract post ID from route params
 
-    // Find post by ID, populate posts, and exclude password
-    const post = await Post.findById(postId)
+    // Find post by ID (you can populate if needed, e.g. author or comments)
+    const post = await Post.findById(postId).populate("user", "name username profilePicture likes comments");
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
     }
 
     res.status(200).json({
       success: true,
-      message: "Post Data Fetched Successfully",
+      message: "Post data fetched successfully",
       post,
     });
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching post:", error.message);
     res.status(500).json({
       success: false,
-      message: "Internal server error"
+      message: "Internal server error",
     });
   }
-}
+};
 
 export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts, getPostById }
