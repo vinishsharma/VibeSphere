@@ -71,7 +71,7 @@ const UserProfile = () => {
   return (
     <>
       <motion.div
-        className="mt-12 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto bg-white/60 backdrop-blur-lg p-6 rounded-3xl shadow-2xl shadow-purple-200/50"
+        className="mt-12 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto bg-white/60 backdrop-blur-lg p-6 rounded-4xl shadow-2xl shadow-purple-200/50"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: "spring" }}

@@ -178,4 +178,29 @@ const getFollowingsPosts = async (req, res) => {
   }
 }
 
-export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts }
+const getPostById = async (req, res) => {
+  try {
+    const { postId } = req.params; // Get post ID from request params
+
+    // Find post by ID, populate posts, and exclude password
+    const post = await Post.findById(postId)
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Post Data Fetched Successfully",
+      post,
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+}
+
+export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts, getPostById }
