@@ -17,6 +17,7 @@ import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Setting from './pages/Setting.jsx'
 import UserProfile from './pages/UserProfile.jsx'
+import PostDisplay from './pages/PostDisplay.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

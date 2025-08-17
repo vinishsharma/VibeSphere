@@ -2,7 +2,9 @@ import React from 'react'
 
 const PostDisplay = () => {
   return (
-    <div>PostDisplay</div>
+    <>
+      <div>Post Display</div>
+    </>
   )
 }
 

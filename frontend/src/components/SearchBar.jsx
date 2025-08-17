@@ -12,7 +12,7 @@ const SearchBar = ({ value, onChange, handleSearch, onClear, placeholder }) => {
 
   return (
     <>
-      <div className='w-100 flex items-center px-4 bg-slate-100 rounded-full'>
+      <div className='w-100 flex items-center px-4 bg-white rounded-full shadow-sm'>
         <input
           type='text'
           value={value}

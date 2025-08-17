@@ -169,7 +169,7 @@ const MyProfile = () => {
   }, [user.likedPosts]); // Runs when user.likedPosts change
 
   return (
-    <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10 min-h-[90vh] bg-white px-2">
+    <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto py-10 min-h-[90vh]  px-2">
       {/* Profile Header */}
       <div>
         <div className="flex items-center w-full">
@@ -182,7 +182,7 @@ const MyProfile = () => {
           </div>
           <div className="w-2/3">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-700">@{user.username}</h2>
+              <h2 className="text-3xl font-light text-slate-700">@{user.username}</h2>
               <button
                 className="flex items-center gap-2 px-4 py-2 bg-white text-blue-400 rounded-lg cursor-pointer hover:bg-blue-400 hover:text-white"
                 onClick={() => setIsEditing(true)}
@@ -218,7 +218,7 @@ const MyProfile = () => {
             </div>
             <div className="flex items-center text-gray-600 gap-2">
               <FaBirthdayCake color="#999" />
-              <p>{changeDateFormat(user.dob)}</p>
+              <p>{(user.dob)}</p>
             </div>
           </div>
         </div>

@@ -1,34 +1,133 @@
-import React, { useState, useEffect } from 'react'
-import SearchBar from '../components/SearchBar';
-import { FaImage } from 'react-icons/fa';
+// import React, { useState, useEffect } from 'react'
+// import SearchBar from '../components/SearchBar';
+// import { FaImage } from 'react-icons/fa';
+// import axios from 'axios';
+
+// const Explore = () => {
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [posts, setPosts] = useState([]);
+//   const [filteredPosts, setFilteredPosts] = useState([]);
+
+//   useEffect(() => {
+//     const fetchPosts = async (req, res) => {
+//       try {
+//         const response = await axios.get('/api/post/get-all-except-my');
+//         setPosts(response.data.posts);
+//         setFilteredPosts(response.data.posts);
+//       } catch (error) {
+//         console.error("Error fetching posts", error);
+//       }
+//     };
+
+//     fetchPosts();
+//   }, []);
+
+//   // Filter posts when search button is clicked or Enter is pressed
+//   const handleSearch = () => {
+//     if (!searchQuery.trim()) {
+//       setFilteredPosts(posts); // Reset if search query is empty
+//       return;
+//     }
+
+//     const filtered = posts.filter(post =>
+//       post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+//     );
+//     setFilteredPosts(filtered);
+//   };
+
+//   const clearSearch = () => {
+//     setSearchQuery("");
+//     setFilteredPosts(posts); // Reset to all posts
+//   };
+
+//   return (
+//     <>
+//       <div className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] min-h-[90vh] mx-auto py-10  px-2'>
+//         <div className='flex justify-center'>
+//           <SearchBar
+//             placeholder={"Search Posts..."}
+//             value={searchQuery}
+//             onChange={({ target }) => {
+//               setSearchQuery(target.value);
+//             }}
+//             onClear={clearSearch}
+//             handleSearch={handleSearch}
+//           />
+//         </div>
+//         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+//           {filteredPosts.length > 0 ? (
+//             filteredPosts.map(post => (
+//               <div key={post._id} className="w-full h-64 ring-1 ring-gray-200 shadow-md">
+//                 {post.media.type === "image" ? (
+//                   <img
+//                     src={post.media.url}
+//                     alt="Post"
+//                     className="w-full h-full object-cover"
+//                   />
+//                 ) : (
+//                   <video autoPlay muted loop className="h-full object-cover">
+//                     <source src={post.media.url} type="video/mp4" />
+//                   </video>
+//                 )}
+//               </div>
+//             ))
+//           ) : (
+//             <div className="col-span-full flex items-center justify-center min-h-[50vh]">
+//               <div className='flex justify-center flex-col items-center'>
+//                 <FaImage size={100} className="mb-2 text-gray-200" />
+//                 <p className="text-center text-lg font-semibold flex items-center gap-2 text-gray-400">
+//                   No Posts Found
+//                 </p>
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+
+// export default Explore
+
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import SearchBar from '../components/SearchBar'; // Make sure the path is correct
+import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPosts = async (req, res) => {
+    const fetchPosts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get('/api/post/get-all-except-my');
         setPosts(response.data.posts);
         setFilteredPosts(response.data.posts);
       } catch (error) {
         console.error("Error fetching posts", error);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchPosts();
   }, []);
 
-  // ✅ Filter posts when search button is clicked or Enter is pressed
   const handleSearch = () => {
     if (!searchQuery.trim()) {
-      setFilteredPosts(posts); // Reset if search query is empty
+      setFilteredPosts(posts);
       return;
     }
-
     const filtered = posts.filter(post =>
       post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     );
@@ -37,54 +136,88 @@ const Explore = () => {
 
   const clearSearch = () => {
     setSearchQuery("");
-    setFilteredPosts(posts); // Reset to all posts
+    setFilteredPosts(posts);
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0, scale: 0.95 },
+    visible: { y: 0, opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 100 } }
   };
 
   return (
-    <>
-      <div className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] min-h-[90vh] mx-auto py-10 bg-white px-2'>
-        <div className='flex justify-center'>
-          <SearchBar
-            placeholder={"Search Posts..."}
-            value={searchQuery}
-            onChange={({ target }) => {
-              setSearchQuery(target.value);
-            }}
-            onClear={clearSearch}
-            handleSearch={handleSearch}
-          />
+    <div className='w-full min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-x p-4 py-12'>
+      <motion.div
+        className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+          Discover New Vibes
+        </h1>
+
+        <div className='flex justify-center mb-10'>
+          <div className="w-full max-w-2xl bg-white/60 backdrop-blur-md p-3 rounded-full shadow-lg shadow-purple-200/50">
+            <SearchBar
+              placeholder={"Search by tags..."}
+              value={searchQuery}
+              onChange={({ target }) => setSearchQuery(target.value)}
+              onClear={clearSearch}
+              handleSearch={handleSearch}
+            />
+          </div>
         </div>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-          {filteredPosts.length > 0 ? (
+
+        <motion.div
+          key={filteredPosts.map(p => p._id).join('-')} // A more robust key for re-animation
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {loading ? (
+            <p className="col-span-full text-center text-slate-600">Loading vibes...</p>
+          ) : filteredPosts.length > 0 ? (
             filteredPosts.map(post => (
-              <div key={post._id} className="w-full h-64 ring-1 ring-gray-200 shadow-md">
+              <motion.div
+                key={post._id}
+                className="w-full aspect-square rounded-2xl overflow-hidden cursor-pointer ring-1 ring-white/50"
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, zIndex: 10, boxShadow: "0px 20px 30px rgba(168, 85, 247, 0.3)" }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
                 {post.media.type === "image" ? (
-                  <img
-                    src={post.media.url}
-                    alt="Post"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={post.media.url} alt="Post" className="w-full h-full object-cover" />
                 ) : (
-                  <video autoPlay muted loop className="h-full object-cover">
+                  <video autoPlay muted loop className="w-full h-full object-cover">
                     <source src={post.media.url} type="video/mp4" />
                   </video>
                 )}
-              </div>
+              </motion.div>
             ))
           ) : (
-            <div className="col-span-full flex items-center justify-center min-h-[50vh]">
-              <div className='flex justify-center flex-col items-center'>
-                <FaImage size={100} className="mb-2 text-gray-200" />
-                <p className="text-center text-lg font-semibold flex items-center gap-2 text-gray-400">
-                  No Posts Found
-                </p>
+            <motion.div
+              className="col-span-full flex items-center justify-center min-h-[40vh] p-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+            >
+              <div className='flex justify-center flex-col items-center text-center bg-white/60 backdrop-blur-md rounded-2xl p-10 shadow-lg shadow-purple-100/50'>
+                <div className="p-5 bg-gradient-to-br from-pink-200 to-purple-200 rounded-full mb-6">
+                  <FaSearch size={50} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-800">No Vibes Found</h3>
+                <p className="text-slate-500 mt-2">Try a different tag or clear the search to see all posts.</p>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
-    </>
-  )
+        </motion.div>
+      </motion.div>
+    </div>
+  );
 }
 
-export default Explore
+export default Explore;
