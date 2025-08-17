@@ -218,7 +218,7 @@ const MyProfile = () => {
             </div>
             <div className="flex items-center text-gray-600 gap-2">
               <FaBirthdayCake color="#999" />
-              <p>{(user.dob)}</p>
+              <p>{changeDateFormat(user.dob)}</p>
             </div>
           </div>
         </div>

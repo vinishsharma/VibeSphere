@@ -121,7 +121,7 @@ const Home = () => {
 
   return (
     // THEME CHANGE: The background is now a soft, static aurora gradient
-    <div className="w-full mx-auto sm:w-full md:w-[80%] lg:w-[70%] min-h-[90vh]  py-12 flex items-center ">
+    <div className="w-full mx-auto sm:w-full md:w-[80%] lg:w-[70%] min-h-[90vh] flex items-center ">
       {loading ? (
         <div className="flex overflow-x-auto no-scrollbar px-4 ">
           <SkeletonCard />
