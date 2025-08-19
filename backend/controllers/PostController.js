@@ -250,6 +250,11 @@ const getCommentsByPostId = async (req, res) => {
     const post = await Post.findById(postId).populate("comments.user", "name username profilePicture");
     if (!post) return res.status(404).json({ message: "Post not found" });
 
+    // sort comments descending (newest first)
+    post.comments = post.comments.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
     res.status(200).json({
       success: true,
       message: "Comments fetched successfully",

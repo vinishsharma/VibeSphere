@@ -197,7 +197,7 @@ const PostDisplay = () => {
                   {isLiked ? <FcLike /> : <FcLikePlaceholder />}
                 </motion.button>
                 <div className="flex items-center gap-2 text-slate-600 text-lg font-semibold">
-                  <FaComment className="text-slate-400" /> {post.comments.length}
+                  <FaComment className="text-slate-400" /> {comments.length}
                 </div>
               </div>
               <p className="text-slate-400 text-sm flex items-center gap-2">
@@ -229,7 +229,8 @@ const PostDisplay = () => {
               </form>
 
               {/* Display Comments */}
-              <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+              {/* <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2"> */}
+              <div className="space-y-4 pr-2">
                 {comments && comments.length > 0 ? (
                   comments.map((comment) => (
                     <div key={comment._id} className="flex items-start gap-3">
