@@ -101,7 +101,7 @@ const Setting = () => {
               <h2 className="text-lg font-bold text-slate-800">Change Password</h2>
               <p className="text-sm text-slate-500">Update your password to keep your account secure.</p>
             </div>
-            <motion.button onClick={() => setIsChangePass(true)} className="flex items-center gap-2 px-4 py-2 bg-transparent border border-purple-400 text-purple-600 rounded-full font-semibold text-sm hover:bg-purple-500 hover:text-white transition-all duration-300" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.button onClick={() => setIsChangePass(true)} className="flex items-center gap-2 px-4 py-2 bg-transparent border border-purple-400 text-purple-600 rounded-full font-semibold text-sm hover:bg-purple-500 hover:text-white transition-all duration-300 cursor-pointer" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <FiEdit />Change
             </motion.button>
           </div>
@@ -130,7 +130,7 @@ const Setting = () => {
               <h2 className="text-lg font-bold text-red-600">Delete Your Account</h2>
               <p className="text-sm text-slate-500">All your posts and data will be permanently deleted and cannot be recovered in the future.</p>
             </div>
-            <motion.button onClick={handleDeleteAccount} className="flex gap-2 items-center px-4 py-2 bg-red-500 text-white rounded-full font-semibold text-sm hover:bg-red-600 transition-all duration-300 shadow-md shadow-red-200" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.button onClick={handleDeleteAccount} className="flex gap-2 items-center px-4 py-2 bg-red-500 text-white rounded-full font-semibold text-sm hover:bg-red-600 transition-all duration-300 shadow-md shadow-red-200 cursor-pointer" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <FaTrashAlt />Delete
             </motion.button>
           </div>

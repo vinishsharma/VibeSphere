@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Loader } from '../components/Spinner'; // Assuming you have a Spinner component
-import { FaCalendarDay, FaComment } from 'react-icons/fa';
+import { FaCalendarDay, FaComment, FaPaperPlane } from 'react-icons/fa';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,8 @@ const PostDisplay = () => {
   const { user, setUser } = useAuth();
   const [likes, setLikes] = useState([]);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false); // State for lightbox
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const PostDisplay = () => {
 
         setPost(response.data.post);
         setLikes(response.data.post.likes);
+
       } catch (error) {
         console.error("Error fetching post:", error);
         setPost(null);
@@ -40,6 +43,39 @@ const PostDisplay = () => {
 
     fetchPost();
   }, [postId]);
+
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!post) return; // Ensure post is loaded before fetching comments
+      try {
+        const response = await axios.get(`/api/post/get-comments/${postId}`, {
+          withCredentials: true,
+        });
+        // console.log("Fetched comments:", response.data.comments);
+        setComments(response.data.comments || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+    fetchComments();
+  }, [comments.length, postId, post]);
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return; // Prevent empty comments 
+    try {
+      const response = await axios.post(`/api/post/add-comment/${postId}`, {
+        comment: newComment,
+      }, {
+        withCredentials: true,
+      });
+      setComments((prevComments) => [...prevComments, response.data.comment]);
+      setNewComment(''); // Clear input after adding comment
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
 
   const handleLikeUnlike = async () => {
     if (!post) return;
@@ -55,6 +91,16 @@ const PostDisplay = () => {
   const handleVideoHover = (isHovering) => {
     if (videoRef.current) {
       isHovering ? videoRef.current.play() : videoRef.current.pause();
+    }
+  };
+
+  const handleViewUser = (id) => {
+    if (user._id !== id && id) {
+      // Navigate to the user's profile if it's not the logged-in user  ) {
+      navigate(`/profile/${id}`);
+    } else {
+      // If it's the logged-in user, navigate to their own profile
+      navigate('/profile');
     }
   };
 
@@ -91,7 +137,7 @@ const PostDisplay = () => {
           {/* Post Header */}
           <div
             className="flex items-center mb-4 cursor-pointer"
-            onClick={() => navigate(`/profile/${post.user._id}`)} // Navigate to user profile
+            onClick={() => handleViewUser(post.user._id)} // Navigate to user profile
           >
             <img
               src={post.user.profilePicture}
@@ -162,8 +208,42 @@ const PostDisplay = () => {
               {likes.length} {likes.length === 1 ? 'like' : 'likes'}
             </p>
 
-            <div className='text-slate-700 mt-4 font-bold text-xl '>
-              Comments
+            {/* --- NEW: Comments Section --- */}
+            <div className='pt-6 p-2 mt-6 border-t-2 border-purple-200/50'>
+              <h3 className='text-slate-700 font-bold text-xl mb-4'>Comments</h3>
+              {/* Add Comment Form */}
+              <form onSubmit={handleAddComment} className="flex items-center gap-2 mb-6">
+                <img src={user?.profilePicture || 'profile.jpg'} alt="My Profile" className="w-9 h-9 rounded-full object-cover" />
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="w-full p-3 pl-4 pr-12 bg-white/50 border-2 border-transparent rounded-full focus:outline-none focus:border-purple-400 transition-colors"
+                  />
+                  <button type="submit" className="absolute right-5 top-1/2 -translate-y-1/2 text-purple-500 hover:text-purple-700 transition-colors">
+                    <FaPaperPlane size={20} />
+                  </button>
+                </div>
+              </form>
+
+              {/* Display Comments */}
+              <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                {comments && comments.length > 0 ? (
+                  comments.map((comment) => (
+                    <div key={comment._id} className="flex items-start gap-3">
+                      <img src={comment.user.profilePicture} alt={comment.user.name} className="w-9 h-9 rounded-full object-cover cursor-pointer" onClick={() => handleViewUser(comment.user._id)} />
+                      <div className="bg-purple-100/50 rounded-lg px-4 py-2 w-full">
+                        <p className="font-bold text-slate-800 text-sm cursor-pointer" onClick={() => handleViewUser(comment.user._id)}>@{comment.user.username}</p>
+                        <p className="text-slate-700">{comment.text}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-slate-500 text-center py-4">Be the first to comment!</p>
+                )}
+              </div>
             </div>
 
           </div>

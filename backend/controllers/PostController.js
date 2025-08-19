@@ -206,4 +206,62 @@ const getPostById = async (req, res) => {
   }
 };
 
-export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts, getPostById }
+const addCommentToPost = async (req, res) => {
+  try {
+    const { postId } = req.params; // Get post ID from request params
+    const { comment } = req.body; // Get comment text from request body
+    const userId = req.user.id; // Get logged-in user's ID
+
+    if (!comment || comment.trim() === "") {
+      return res.status(400).json({ message: "Comment cannot be empty" });
+    }
+
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    // Create new comment object
+    const newComment = {
+      user: userId,
+      text: comment,
+      createdAt: new Date(),
+    };
+
+    post.comments.push(newComment); // Add comment to post's comments array
+    await post.save(); // Save the updated post
+
+    res.status(200).json({
+      success: true,
+      message: "Comment added successfully",
+      comment: newComment, // Return the newly added comment
+    });
+  } catch (error) {
+    console.error("Error adding comment:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+const getCommentsByPostId = async (req, res) => {
+  try {
+    const { postId } = req.params; // Get post ID from request params
+
+    const post = await Post.findById(postId).populate("comments.user", "name username profilePicture");
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    res.status(200).json({
+      success: true,
+      message: "Comments fetched successfully",
+      comments: post.comments,
+    });
+  } catch (error) {
+    console.error("Error fetching comments:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export { createPost, getPostsByIds, getLikedPostsByIds, getAllPosts, getAllPostsExceptMy, likeUnlikePost, getFollowingsPosts, getPostById, addCommentToPost, getCommentsByPostId };

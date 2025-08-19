@@ -40,7 +40,7 @@ const ProfileFollowingsList = ({
   return (
     <>
       <div className="fixed inset-0 bg-[#22222277] flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg w-1/3">
+        <div className="bg-white p-6 rounded-lg w-1/2">
           <h2 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">My Followings</h2>
 
           <ul className="h-[50vh] overflow-y-auto">
