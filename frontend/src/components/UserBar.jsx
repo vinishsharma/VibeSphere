@@ -73,7 +73,7 @@ const UserBar = ({ targetUser }) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          {isFollowing ? "Unfollowing" : "Follow"}
+          {isFollowing ? "Unfollow" : "Follow"}
         </motion.button>
         <motion.button
           onClick={handleViewProfile}

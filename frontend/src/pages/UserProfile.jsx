@@ -3,7 +3,7 @@ import { FaUserFriends, FaImages, FaMapMarkerAlt, FaBirthdayCake, FaInfoCircle, 
 import axios from "axios";
 import ProfilePostCard from '../components/ProfilePostCard'
 import { changeDateFormat } from "../utils/helper";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
@@ -14,6 +14,7 @@ const UserProfile = () => {
   const { user, setUser } = useAuth();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followersCount, setFollowersCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,6 +57,8 @@ const UserProfile = () => {
     }
   };
 
+
+
   // Animation variants for the post grid
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -89,14 +92,24 @@ const UserProfile = () => {
             <div className="w-2/3">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-3xl font-light text-gray-700">@{targetUser.username}</h2>
-                <motion.button
-                  onClick={handleFollowUnfollow}
-                  className={`cursor-pointer px-5 py-2 rounded-full transition-all duration-300 font-semibold text-sm ${isFollowing ? "bg-transparent text-slate-500 border border-slate-400 hover:bg-slate-500 hover:text-white" : "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md shadow-purple-200/80"}`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {isFollowing ? "Unfollowing" : "Follow"}
-                </motion.button>
+                <div className="flex items-center gap-4">
+                  <motion.button
+                    onClick={handleFollowUnfollow}
+                    className={`cursor-pointer px-5 py-2 rounded-full transition-all duration-300 font-semibold text-sm ${isFollowing ? "bg-transparent text-slate-500 border border-slate-400 hover:bg-slate-500 hover:text-white" : "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md shadow-purple-200/80"}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </motion.button>
+                  <motion.button
+                    onClick={() => navigate(`/message/${targetUser._id}`)}
+                    className={`px-5 py-2 bg-transparent border border-purple-400 text-purple-600 rounded-full font-semibold text-sm hover:bg-purple-500 hover:text-white transition-all duration-300 cursor-pointer shadow-md shadow-blue-200/80`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Message
+                  </motion.button>
+                </div>
               </div>
               <div className="flex justify-center flex-row gap-20 mt-4 text-center">
                 <div>

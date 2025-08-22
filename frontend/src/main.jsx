@@ -18,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Setting from './pages/Setting.jsx'
 import UserProfile from './pages/UserProfile.jsx'
 import PostDisplay from './pages/PostDisplay.jsx'
+import { SocketContextProvider } from './context/SocketContext.jsx'
+import MessageDisplay from './pages/MessageDisplay.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +35,7 @@ const router = createBrowserRouter(
         <Route path="/setting" element={<Setting />} />
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/post/:postId" element={<PostDisplay />} />
+        <Route path="/message/:receiverId" element={<MessageDisplay />} />
       </Route>
     </Route>
   )
@@ -40,22 +43,24 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
-    <StrictMode>
-      <RouterProvider router={router} />
-      <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        transition={Bounce}
-      />
-    </StrictMode>
+    <SocketContextProvider>
+      <StrictMode>
+        <RouterProvider router={router} />
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
+      </StrictMode>
+    </SocketContextProvider>
   </AuthProvider>
 )
 
