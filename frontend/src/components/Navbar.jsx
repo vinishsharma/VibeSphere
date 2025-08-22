@@ -34,7 +34,7 @@ const Navbar = () => {
   return (
     // THEME CHANGE: Floating pill design with an animated gradient background
     <div className="pt-4">
-      <nav className={`bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 p-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-full md:w-[80%] lg:w-[70%] mx-auto rounded-full shadow-lg shadow-black/10  z-10`}>
+      <div className={`bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 p-3 flex ${user ? "justify-between" : "justify-center"} items-center w-full sm:w-full md:w-[80%] lg:w-[70%] mx-auto rounded-full shadow-lg shadow-black/10  z-10`}>
         {/* Left Section: Logo & Name */}
         <Link to='/'>
           <div className="flex items-center space-x-3 ml-2">
@@ -112,7 +112,7 @@ const Navbar = () => {
             </div>
           </div>
         )}
-      </nav>
+      </div>
     </div>
   );
 };

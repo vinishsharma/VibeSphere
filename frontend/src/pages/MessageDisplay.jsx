@@ -109,14 +109,14 @@ const MessageDisplay = () => {
 
   return (
     // THEME CHANGE: Full-page animated gradient background
-    <div className="flex-col w-full min-h-screen bg-gradient-to-br animate-gradient-x p-4 py-12 flex items-center justify-center">
+    <div className="flex-col w-full min-h-screen bg-gradient-to-br animate-gradient-x p-4 py-12 flex items-center justify-center ">
 
       <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
         Chat with Friends...
       </h2>
 
       <motion.div
-        className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-4xl h-[85vh] flex flex-col bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl shadow-purple-200/50 ring-1 ring-white/50"
+        className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-w-4xl h-[85vh] flex flex-col bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl shadow-purple-200/50  overflow-hidden border-1 border-purple-200"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: "spring" }}
@@ -125,7 +125,7 @@ const MessageDisplay = () => {
 
         {/* THEME CHANGE: Themed chat header */}
         <div
-          className="flex items-center p-4 border-b border-purple-200/50 cursor-pointer transition-colors duration-300"
+          className="flex items-center p-4 border-b border-purple-500 cursor-pointer transition-colors duration-300 bg-white/50"
           onClick={() => navigate(`/profile/${receiver._id}`)}
         >
           <img

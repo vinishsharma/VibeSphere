@@ -8,4 +8,10 @@ const changeDateFormat = (isDate) => {
   return date.toLocaleDateString("en-GB", options); // Example: "1 Jan 2000"
 };
 
-export { changeDateFormat };
+const changeTimeFormat = (isoString) => {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
+export { changeDateFormat, changeTimeFormat };
