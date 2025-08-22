@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import RootRouter from "./routes/RootRouter.js";
-import initializeSocket from "./config/socket.js";
+import initializeSocket from "./utils/socket.js";
 
 // Create an Express application
 const app = express();

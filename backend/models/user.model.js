@@ -72,8 +72,31 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+      default: "",  // For OTP verification during signup
+    },
+    otpExpires: {
+      type: Date,
+      default: Date.now, // Default to current time, will be updated on OTP generation   
+    },
   },
   { timestamps: true }
+);
+
+// --- ADD THIS INDEX ---
+// This will automatically delete documents after the otpExpires time is met,
+// ONLY IF the isVerified field is false.
+UserSchema.index(
+  { otpExpires: 1 },
+  {
+    expireAfterSeconds: 0,
+    partialFilterExpression: { isVerified: false },
+  }
 );
 
 export default mongoose.model("User", UserSchema);
