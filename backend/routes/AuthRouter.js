@@ -8,7 +8,6 @@ const router = express.Router();
 router.post('/login', validateLogin, login);
 router.post('/send-otp', validateSignup, sendOTP);
 router.post('/verifysignup', validateOtpVerification, verifyOTPandSignup);
-// router.post('/signup', validateSignup, signup);
 router.post('/logout', logout);
 router.get('/loggedInUser', isLoggedIn, async (req, res) => {
   res.json(req.user);
