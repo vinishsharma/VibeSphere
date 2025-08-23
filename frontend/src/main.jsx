@@ -20,6 +20,7 @@ import UserProfile from './pages/UserProfile.jsx'
 import PostDisplay from './pages/PostDisplay.jsx'
 import { SocketContextProvider } from './context/SocketContext.jsx'
 import MessageDisplay from './pages/MessageDisplay.jsx'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,25 +43,27 @@ const router = createBrowserRouter(
 )
 
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
-    <SocketContextProvider>
-      <StrictMode>
-        <RouterProvider router={router} />
-        <ToastContainer
-          position="top-center"
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
-      </StrictMode>
-    </SocketContextProvider>
-  </AuthProvider>
+  <StrictMode>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <AuthProvider>
+        <SocketContextProvider>
+          <RouterProvider router={router} />
+          <ToastContainer
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+        </SocketContextProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
+  </StrictMode>
 )
 

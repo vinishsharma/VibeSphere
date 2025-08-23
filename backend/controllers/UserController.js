@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Post from '../models/post.model.js';
 import bcrypt from 'bcrypt';
+import Message from "../models/message.model.js";
 
 // Edit Profile Controller
 const editProfile = async (req, res) => {
@@ -62,6 +63,11 @@ const deleteUser = async (req, res) => {
 
     // Remove the user's likes from all posts
     await Post.updateMany({ likes: userId }, { $pull: { likes: userId } });
+
+    // Delete all messages sent or received by the user
+    await Message.deleteMany({
+      $or: [{ senderId: userId }, { receiverId: userId }],
+    });
 
     // Delete the user
     await User.findByIdAndDelete(userId);

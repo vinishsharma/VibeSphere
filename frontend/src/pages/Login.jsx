@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,30 @@ const Login = () => {
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Login failed. Please check your credentials.";
       toast.error(errorMessage);
+    }
+  };
+
+  // --- NEW: Function to handle Google login success ---
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+
+      // console.log("Google Credential Response:", credentialResponse);
+
+      // Send the authorization code to your backend
+      const response = await axios.post("/api/auth/google-login", {
+        credential: credentialResponse.credential,
+      });
+
+      // On success, update auth context and navigate
+      if (response.data.user) {
+        setUser(response.data.user);
+      }
+      toast.success("Welcome! You're signed in with Google.");
+      navigate("/profile");
+
+    } catch (error) {
+      toast.error("Google Sign-In failed. Please try again.");
+      console.error("Google Sign-In Error:", error);
     }
   };
 
@@ -106,6 +131,29 @@ const Login = () => {
             Sign up
           </Link>
         </p>
+
+
+        <div className="flex items-center my-6">
+          <div className="flex-grow border-t border-slate-300"></div>
+          <span className="mx-4 text-slate-500 font-semibold">OR</span>
+          <div className="flex-grow border-t border-slate-300"></div>
+        </div>
+
+        {/* --- NEW GOOGLE LOGIN BUTTON --- */}
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              toast.error('Google Login Failed');
+            }}
+            flow="auth-code" // This specifies we want the authorization code flow
+            width="320px"
+            theme="outline"
+            shape="pill"
+          />
+        </div>
+
+
       </motion.div>
     </div>
   );

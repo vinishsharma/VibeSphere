@@ -2,7 +2,60 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import sendEmail from "../utils/sendEmail.js";
+import { OAuth2Client } from "google-auth-library";
+import crypto from "crypto";
 
+
+// --- NEW GOOGLE OAUTH CONTROLLER ---
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const googleLogin = async (req, res) => {
+  const { credential } = req.body; // The authorization code from the frontend
+
+  try {
+    // Verify the ID token to get user profile information
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // console.log("Google Payload:", payload);
+
+    // Find or create the user in your database
+    let user = await User.findOne({ email: payload.email });
+
+    if (!user) {
+      const uniqueUsername = `${payload.email.split('@')[0]}_${crypto.randomBytes(4).toString('hex')}`;
+      user = new User({
+        name: payload.name,
+        email: payload.email,
+        username: uniqueUsername,
+        profilePicture: payload.picture,
+        isVerified: true,
+        password: crypto.randomBytes(16).toString('hex'), // Random password for OAuth users
+      });
+      await user.save();
+    }
+
+    // Generate your application's JWT
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+
+    // Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // Send the user data back to the frontend
+    user.password = undefined;
+    res.status(200).json({ message: "Login successful!", user, token });
+
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 
 const sendOTP = async (req, res) => {
@@ -160,4 +213,4 @@ const logout = async (req, res) => {
 };
 
 
-export { sendOTP, verifyOTPandSignup, login, logout };
+export { googleLogin, sendOTP, verifyOTPandSignup, login, logout };

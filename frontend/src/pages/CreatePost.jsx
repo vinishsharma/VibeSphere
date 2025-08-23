@@ -46,7 +46,7 @@ const CreatePost = () => {
         return;
       }
 
-      console.log(response.data);
+      // console.log(response.data);
 
       // Store both URL & type inside media object
       if (response.data.imageURL || response.data.videoURL) {
@@ -113,7 +113,7 @@ const CreatePost = () => {
       );
 
       setMessage(response.data.message || "Post Created Successful!");
-      console.log("Created Post:", response.data);
+      // console.log("Created Post:", response.data);
 
       // Update AuthContext with the new post without reloading
       setUser((prevUser) => ({
