@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Loader } from './Spinner';
 import { FaUserFriends } from 'react-icons/fa';
 import UserBar from './UserBar';
+import { motion } from 'framer-motion';
 
 const ProfileFollowingsList = ({
   user,
@@ -39,8 +40,13 @@ const ProfileFollowingsList = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#22222277] flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg w-1/2">
+      <motion.div
+        className="fixed inset-0 bg-black/30 flex justify-center items-center backdrop-blur-sm"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+      >
+        <div className="bg-white p-6 rounded-xl w-1/2">
           <h2 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">My Followings</h2>
 
           <ul className="h-[50vh] overflow-y-auto">
@@ -53,19 +59,30 @@ const ProfileFollowingsList = ({
                 <UserBar key={following._id} targetUser={following} />
               ))
             ) : (
-              <div className="text-center text-gray-500 py-6 h-full flex flex-col items-center justify-center">
-                <FaUserFriends className="w-24 h-24 mx-auto mb-2 text-gray-400" />
-                <h3 className="text-lg font-semibold">No Followings</h3>
-                <p className="text-sm">
-                  You are not following anyone. Start following people!
+              <div className="text-center text-slate-500 py-8 h-full flex flex-col items-center justify-center">
+                <div className='p-8 border-4 border-dashed border-purple-200/80 rounded-full mb-4'>
+                  <FaUserFriends size={60} className="text-purple-300" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-800">
+                  Not Following Anyone
+                </h3>
+                <p className="text-slate-500 mt-2">
+                  Users you follow will appear here.
                 </p>
               </div>
             )}
           </ul>
 
-          <button onClick={() => { setDisplayFollowings(false) }} className="w-full bg-gray-200 p-2 rounded-2xl mt-4 cursor-pointer"> Cancel </button>
+          <motion.button
+            onClick={() => { setDisplayFollowings(false) }}
+            className=" cursor-pointer w-full bg-transparent text-slate-600 font-semibold py-2 px-5 rounded-full hover:bg-slate-200/50 transition-colors duration-200"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Cancel
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }

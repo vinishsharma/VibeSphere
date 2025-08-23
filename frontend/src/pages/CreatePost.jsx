@@ -135,7 +135,7 @@ const CreatePost = () => {
 
   return (
     // THEME CHANGE: Full-page animated gradient background
-    <div className="w-full min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-x p-4 mt-8">
+    <div className="w-full min-h-screen  p-4 py-12">
       <motion.div
         className="w-full max-w-2xl mx-auto"
         initial={{ y: -50, opacity: 0 }}

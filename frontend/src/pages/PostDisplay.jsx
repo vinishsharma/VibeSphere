@@ -127,7 +127,7 @@ const PostDisplay = () => {
 
   return (
     <>
-      <div className=" mt-12 w-full min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-x ">
+      <div className="py-12 w-full min-h-screen">
         <motion.div
           className="w-full sm:w-[90%] md:w-[70%] lg:w-[60%] mx-auto bg-white/60 backdrop-blur-lg p-6 rounded-3xl shadow-2xl shadow-purple-200/50"
           initial={{ opacity: 0, y: -20 }}

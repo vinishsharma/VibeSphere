@@ -72,24 +72,24 @@ const UserProfile = () => {
   if (!targetUser) return <Spinner />;
 
   return (
-    <>
+    <div className="py-12">
       <motion.div
-        className="mt-12 w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto bg-white/60 backdrop-blur-lg p-6 rounded-4xl shadow-2xl shadow-purple-200/50"
+        className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto bg-white/60 backdrop-blur-lg p-6 rounded-4xl shadow-2xl shadow-purple-200/50"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: "spring" }}
       >
         {/* Profile Header */}
         <div>
-          <div className="flex items-center w-full">
-            <div className="w-1/3 flex items-center justify-center">
+          <div className="flex flex-col md:flex-row items-center w-full gap-8">
+            <div className="w-full md:w-1/3 flex items-center justify-center">
               <img
                 src={targetUser?.profilePicture || "profile.jpg"}
                 alt="Profile"
                 className="w-52 h-52 rounded-full object-cover ring-4 ring-purple-300 ring-offset-4 ring-offset-white/50 shadow-lg"
               />
             </div>
-            <div className="w-2/3">
+            <div className="w-full md:w-2/3 flex flex-col gap-4">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-3xl font-light text-gray-700">@{targetUser.username}</h2>
                 <div className="flex items-center gap-4">
@@ -113,41 +113,43 @@ const UserProfile = () => {
               </div>
               <div className="flex justify-center flex-row gap-20 mt-4 text-center">
                 <div>
-                  <FaImages className="text-xl mx-auto" />
-                  <p className="font-bold">{targetUser.posts.length}</p>
+                  <FaImages className="text-xl mx-auto " />
+                  <p className="font-bold text-xl text-slate-800">{targetUser.posts.length}</p>
                   <p className="text-gray-600">Posts</p>
                 </div>
                 <div>
-                  <FaUserFriends className="text-xl mx-auto" />
-                  <p className="font-bold">{followersCount}</p>
+                  <FaUserFriends className="text-xl mx-auto " />
+                  <p className="font-bold text-xl text-slate-800">{followersCount}</p>
                   <p className="text-gray-600">Followers</p>
                 </div>
                 <div>
-                  <FaUserFriends className="text-xl mx-auto" />
-                  <p className="font-bold">{targetUser.following.length}</p>
+                  <FaUserFriends className="text-xl mx-auto " />
+                  <p className="font-bold text-xl text-slate-800">{targetUser.following.length}</p>
                   <p className="text-gray-600">Following</p>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold">{targetUser.name}</h2>
-              <div className="flex items-center text-gray-600 gap-2">
-                <FaMapMarkerAlt color="#999" />
-                <p>{targetUser.city}</p>
-              </div>
-              <div className="flex items-center text-gray-600 gap-2">
-                <FaInfoCircle color="#999" />
-                <p>{targetUser.bio}</p>
-              </div>
-              <div className="flex items-center text-gray-600 gap-2">
-                <FaBirthdayCake color="#999" />
-                <p>{changeDateFormat(targetUser.dob)}</p>
+              <div>
+                <h2 className="text-2xl font-bold">{targetUser.name}</h2>
+                <div className="flex items-center text-gray-600 gap-2">
+                  <FaMapMarkerAlt className="text-purple-500" />
+                  <p>{targetUser.city}</p>
+                </div>
+                <div className="flex items-center text-gray-600 gap-2">
+                  <FaInfoCircle className="text-purple-500" />
+                  <p>{targetUser.bio}</p>
+                </div>
+                <div className="flex items-center text-gray-600 gap-2">
+                  <FaBirthdayCake className="text-purple-500" />
+                  <p>{changeDateFormat(targetUser.dob)}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <hr className="my-10 w-[60%] mx-auto border-1 border-gray-300" />
+        <hr className="mt-8 w-full mx-auto border-1 border-purple-200/50" />
 
-        <div className="flex justify-center mt-6 items-center gap-2 text-2xl font-semibold text-slate-700">
+        <div className="flex justify-center mt-4 items-center gap-2 text-xl font-semibold text-slate-700">
           <FaImage /> POSTS
         </div>
 
@@ -168,12 +170,12 @@ const UserProfile = () => {
                 </motion.div>
               ))
           ) : (
-            <div className="col-span-3 text-gray-500">
-              <div className="flex flex-col items-center justify-center min-h-[30vh] text-gray-400">
-                <div className='border-2 w-28 h-28 flex items-center justify-center border-gray-200 rounded-full mb-2'>
-                  <FaCamera size={60} className=" text-gray-200" />
+            <div className="col-span-full text-slate-500 py-8">
+              <div className="flex flex-col items-center justify-center min-h-[30vh]">
+                <div className='p-8 border-4 border-dashed border-purple-200/80 rounded-full mb-4'>
+                  <FaCamera size={60} className="text-purple-300" />
                 </div>
-                <p className="text-center text-lg font-semibold mb-4">
+                <p className="text-center text-2xl font-bold text-slate-800">
                   No Posts Yet
                 </p>
               </div>
@@ -181,7 +183,7 @@ const UserProfile = () => {
           )}
         </motion.div>
       </motion.div >
-    </>
+    </div>
   )
 }
 

@@ -47,7 +47,7 @@ const MessageDisplay = () => {
 
   return (
     // THEME CHANGE: Full-page animated gradient background
-    <div className="flex-col w-full min-h-screen bg-gradient-to-br animate-gradient-x p-4 py-12 flex items-center justify-center ">
+    <div className="flex-col w-full min-h-screen p-4 py-12 flex items-center justify-center ">
 
       <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
         Chat with Friends...
