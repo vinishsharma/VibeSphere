@@ -21,6 +21,18 @@ const Notifications = () => {
     fetchNotifications();
   }, []);
 
+  const handleClearAllNotifications = async () => {
+    try {
+      await axios.delete('/api/notification/delete-all', {
+        withCredentials: true,
+      });
+
+      setNotifications([]);
+    } catch (error) {
+      console.error('Error clearing notifications:', error);
+    }
+  };
+
   // Remove notification from UI
   const handleDeleteNotification = (id) => {
     setNotifications((prevNotifications) =>
@@ -43,7 +55,15 @@ const Notifications = () => {
           Notifications
         </h2>
 
-        <div className="bg-white/60 backdrop-blur-lg p-8 rounded-2xl shadow-2xl shadow-purple-200/50 ring-1 ring-purple-200 space-y-6">
+        <div className="bg-white/60 backdrop-blur-lg p-8 rounded-2xl shadow-2xl shadow-purple-200/50 ring-1 ring-purple-200 space-y-6 max-h-screen overflow-scroll">
+
+          {notifications.length > 0 && (
+            <div className="flex justify-end mb-4 w-full">
+              <button className=" text-gray-400 rounded-lg cursor-pointer hover:text-gray-600 transition-all duration-300" onClick={handleClearAllNotifications} >
+                Clear All
+              </button>
+            </div>
+          )}
 
           {notifications.length > 0 ? (
             notifications.map((notification, index) => (
@@ -63,8 +83,8 @@ const Notifications = () => {
             </div>
           )}
         </div>
-      </motion.div>
-    </div>
+      </motion.div >
+    </div >
   )
 }
 
