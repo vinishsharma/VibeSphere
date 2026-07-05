@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import User from './user.model.js';
+import Post from './post.model.js';
 
 const NotificationSchema = new mongoose.Schema(
   {
@@ -14,8 +16,13 @@ const NotificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["#like", "#comment", "#follow", "#message"],
+      enum: ["#like", "#comment", "#follow"],
       required: true,
+    },
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      default: null, // Only relevant for like and comment notifications
     },
     message: {
       type: String,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaTimes, FaCheck } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
@@ -19,12 +19,14 @@ const NotifyBar = ({ notification, onDelete }) => {
     }
   };
 
+  const linkTo = notification.type === "#like" || notification.type === "#comment" ? `/post/${notification.postId}` : `/profile/${notification.senderId._id}`;
+
   return (
 
     <div className="flex items-center justify-between p-3 px-4 rounded-2xl bg-white/50 hover:bg-white/80 border border-white transition-all duration-300">
 
       <div className="flex items-center">
-        <Link to={`/profile/${notification.senderId._id}`}>
+        <Link to={linkTo}>
           <img
             src={notification.senderId.profilePicture}
             alt={notification.senderId.name}

@@ -1,6 +1,6 @@
 import Notification from "../models/notification.model.js";
 
-export const createNotification = async ({ receiverId, senderId, type, message }) => {
+export const createNotification = async ({ receiverId, senderId, type, postId, message }) => {
   try {
     // Don't notify yourself
     // if (receiverId.toString() === senderId.toString()) {
@@ -22,6 +22,7 @@ export const createNotification = async ({ receiverId, senderId, type, message }
       receiverId,
       senderId,
       type,
+      postId,
       message,
     });
 

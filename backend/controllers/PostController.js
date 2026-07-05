@@ -1,5 +1,6 @@
 import Post from '../models/post.model.js'
 import User from '../models/user.model.js';
+import { createNotification } from '../services/notification.service.js';
 
 const createPost = async (req, res) => {
   try {
@@ -130,6 +131,18 @@ const likeUnlikePost = async (req, res) => {
       // Like the post
       post.likes.push(userId);
       user.likedPosts.push(postId);
+
+      // send Like Notification 
+      const notification = {
+        receiverId: post.user, // The owner of the post
+        senderId: userId, // The user who liked the post
+        type: "#like",
+        postId: postId,
+        message: `${user.name} liked your post.`,
+      };
+
+      await createNotification(notification);
+
     } else {
       // Unlike the post
       post.likes.splice(likedIndex, 1);
@@ -228,6 +241,17 @@ const addCommentToPost = async (req, res) => {
 
     post.comments.push(newComment); // Add comment to post's comments array
     await post.save(); // Save the updated post
+
+    //send Comment Notification
+    const notification = {
+      receiverId: post.user, // The owner of the post
+      senderId: userId, // The user who commented
+      type: "#comment",
+      postId: postId,
+      message: `${req.user.name} commented on your post.`,
+    };
+
+    await createNotification(notification);
 
     res.status(200).json({
       success: true,
