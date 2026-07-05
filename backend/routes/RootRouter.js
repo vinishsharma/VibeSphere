@@ -4,6 +4,7 @@ import UserRouter from './UserRouter.js'
 import UploadRouter from './UploadRouter.js'
 import PostRouter from './PostRouter.js'
 import MessageRouter from './MessageRouter.js'
+import NotificationRouter from './NotificationRouter.js'
 
 const router = express.Router();
 
@@ -13,5 +14,6 @@ router.use('/user', UserRouter);
 router.use('/upload', UploadRouter);  //Cloudinary
 router.use('/post', PostRouter);
 router.use('/message', MessageRouter);
+router.use('/notification', NotificationRouter);
 
 export default router;

@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import Post from '../models/post.model.js';
 import bcrypt from 'bcrypt';
 import Message from "../models/message.model.js";
+import { createNotification } from "../services/notification.service.js";
 
 // Edit Profile Controller
 const editProfile = async (req, res) => {
@@ -273,6 +274,15 @@ const followUnfollowUser = async (req, res) => {
       targetUser.followers.push(myId);
       await me.save();
       await targetUser.save();
+
+      //send follow notificaton
+      await createNotification({
+        receiverId: userId,
+        senderId: myId,
+        type: "#follow",
+        message: `${me.name} started following you.`,
+        isRead: false
+      });
 
       return res.status(200).json({
         message: "User followed successfully.",
