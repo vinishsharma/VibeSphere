@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { FaBars, FaTimes, FaUser, FaSearch, FaCog, FaCompass } from "react-icons/fa";
+import { FaBars, FaTimes, FaUser, FaSearch, FaCog, FaCompass, FaBell } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -109,6 +109,14 @@ const Navbar = () => {
                   </ul>
                 </div>
               )}
+            </div>
+            {/* Notification */}
+            <div>
+              <Link to="/notifications" >
+                <button className="text-2xl text-slate-700 cursor-pointer transition-transform duration-200 hover:scale-110">
+                  <FaBell />
+                </button>
+              </Link>
             </div>
           </div>
         )}

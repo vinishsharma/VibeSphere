@@ -21,6 +21,7 @@ import PostDisplay from './pages/PostDisplay.jsx'
 import { SocketContextProvider } from './context/SocketContext.jsx'
 import MessageDisplay from './pages/MessageDisplay.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import Notifications from './pages/Notifications.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/post/:postId" element={<PostDisplay />} />
         <Route path="/message/:receiverId" element={<MessageDisplay />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Route>
     </Route>
   )
