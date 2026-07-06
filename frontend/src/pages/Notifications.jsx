@@ -55,7 +55,7 @@ const Notifications = () => {
           Notifications
         </h2>
 
-        <div className="bg-white/60 backdrop-blur-lg p-8 rounded-2xl shadow-2xl shadow-purple-200/50 ring-1 ring-purple-200 space-y-6 max-h-screen overflow-scroll">
+        <div className="bg-white/60 backdrop-blur-lg p-8 rounded-2xl shadow-2xl shadow-purple-200/50 ring-1 ring-purple-200 space-y-6 h-[70vh] overflow-scroll">
 
           {notifications.length > 0 && (
             <div className="flex justify-end mb-4 w-full">
@@ -77,7 +77,7 @@ const Notifications = () => {
               </motion.div>
             ))
           ) : (
-            <div className="flex flex-col flex-grow items-center justify-center text-center text-slate-500 p-8">
+            <div className="flex flex-col flex-grow items-center justify-center text-center text-slate-500 p-8 h-full">
               <FaBellSlash size={80} className="mb-6 text-purple-300" />
               <h3 className="text-2xl font-bold text-slate-800">No Notifications Yet</h3>
             </div>
