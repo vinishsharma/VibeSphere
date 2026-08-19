@@ -3,7 +3,7 @@ It's a social media platform centered around sharing images and videos. It gives
 
 ## Production deployment
 
-This repository is configured to deploy the React/Vite frontend to Vercel from the repository root. For reliable realtime messaging, deploy the Express API and Socket.IO server to a persistent Node.js host: this app keeps its online-user map in the server process, so it cannot safely be split across independently scaled function instances.
+This repository is configured to deploy the React/Vite frontend to Vercel with `frontend` as the project's Root Directory. For reliable realtime messaging, deploy the Express API and Socket.IO server to a persistent Node.js host: this app keeps its online-user map in the server process, so it cannot safely be split across independently scaled function instances.
 
 ### 1. Deploy the backend
 
@@ -18,7 +18,7 @@ Enter the secret values requested by the Blueprint from [backend/.env.example](b
 ### 2. Deploy the frontend to Vercel
 
 1. Push this repository to GitHub.
-2. In Vercel, select **Add New → Project**, import `vinishsharma/VibeSphere`, and deploy from the repository root. The committed [vercel.json](vercel.json) installs and builds `frontend` automatically and supports direct visits to React Router URLs.
+2. In Vercel, select **Add New → Project**, import `vinishsharma/VibeSphere`, and set **Root Directory** to `frontend`. The committed [vercel.json](vercel.json) then installs and builds the Vite app and supports direct visits to React Router URLs.
 3. Before the production deployment, add these Vercel environment variables for **Production** (and Preview if you need preview testing):
 
    | Variable | Value |

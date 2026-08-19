@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
