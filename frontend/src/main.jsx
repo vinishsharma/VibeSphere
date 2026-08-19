@@ -24,6 +24,9 @@ import MessageDisplay from './pages/MessageDisplay.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Notifications from './pages/Notifications.jsx'
 
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+  || "946909968029-sondjjce6i0mp57pklsqpk0tqapl0lmg.apps.googleusercontent.com";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -47,7 +50,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={googleClientId}>
       <AuthProvider>
         <SocketContextProvider>
           <RouterProvider router={router} />
