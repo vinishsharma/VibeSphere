@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useAuth } from "./AuthContext"; // Adjust the import path as necessary
+import { apiUrl } from "../config/api";
 
 const SocketContext = createContext();
 
@@ -15,30 +16,35 @@ export const SocketContextProvider = ({ children }) => {
 
   // Get the user ID from the authenticated user
   const authUserId = user ? user._id : null;
+  const socketUrl = import.meta.env.VITE_SOCKET_URL?.trim().replace(/\/$/, "")
+    || apiUrl
+    || (import.meta.env.DEV ? "http://localhost:8080" : window.location.origin);
 
   useEffect(() => {
-    if (authUserId) {
-      const socketInstance = io("http://localhost:8080", {
-        query: {
-          userId: authUserId,
-        },
-      });
-
-      setSocket(socketInstance);
-
-      socketInstance.on("getOnlineUsers", (users) => {
-        setOnlineUsers(users);
-      });
-
-      // Cleanup function to close the socket connection
-      return () => socketInstance.close();
-    } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
+    if (!authUserId) {
+      setSocket(null);
+      setOnlineUsers([]);
+      return undefined;
     }
-  }, [authUserId]);
+
+    const socketInstance = io(socketUrl, {
+      query: {
+        userId: authUserId,
+      },
+      withCredentials: true,
+    });
+
+    setSocket(socketInstance);
+
+    socketInstance.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+
+    return () => {
+      socketInstance.close();
+      setSocket((activeSocket) => activeSocket === socketInstance ? null : activeSocket);
+    };
+  }, [authUserId, socketUrl]);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>

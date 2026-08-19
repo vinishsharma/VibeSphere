@@ -1,6 +1,7 @@
 import React from 'react'
 import { StrictMode } from 'react'
 import './index.css'
+import './config/api.js'
 import { createRoot } from 'react-dom/client'
 import Layout from './Layout.jsx'
 import Home from './pages/Home.jsx'
@@ -68,4 +69,3 @@ createRoot(document.getElementById('root')).render(
     </GoogleOAuthProvider>
   </StrictMode>
 )
-

@@ -4,6 +4,9 @@
   "description": "Backend for VibeSphere App",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js"

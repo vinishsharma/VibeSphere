@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import sendEmail from "../utils/sendEmail.js";
 import { OAuth2Client } from "google-auth-library";
 import crypto from "crypto";
+import { authCookieOptions, clearAuthCookieOptions } from "../utils/authCookie.js";
 
 
 // --- NEW GOOGLE OAUTH CONTROLLER ---
@@ -42,14 +43,11 @@ const googleLogin = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
     // Set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    res.cookie("token", token, authCookieOptions());
 
     // Send the user data back to the frontend
     user.password = undefined;
-    res.status(200).json({ message: "Login successful!", user, token });
+    res.status(200).json({ message: "Login successful!", user });
 
   } catch (error) {
     console.error("Google login error:", error);
@@ -143,17 +141,12 @@ const verifyOTPandSignup = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
     // Set HTTP-Only Cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      // sameSite: 'strict',
-    });
+    res.cookie("token", token, authCookieOptions());
 
     // Ensure the password and other sensitive fields are not sent back
     user.password = undefined;
 
-    res.status(201).json({ message: "Signup successful!", token, user });
+    res.status(201).json({ message: "Signup successful!", user });
   } catch (error) {
     console.error("Signup Error:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -185,12 +178,9 @@ const login = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true, // Prevents JavaScript access
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    });
+    res.cookie("token", token, authCookieOptions());
 
-    res.status(200).json({ message: "Login successful", token, user });
+    res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -201,9 +191,7 @@ const login = async (req, res) => {
 //Logout Controller
 const logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-    });
+    res.clearCookie("token", clearAuthCookieOptions());
 
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
