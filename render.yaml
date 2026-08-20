@@ -21,6 +21,8 @@ services:
         value: vibe-sphere
       - key: GOOGLE_CLIENT_ID
         sync: false
+      - key: CLIENT_ORIGIN
+        value: https://vibe-sphere-indol.vercel.app
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

@@ -15,13 +15,27 @@ const server = http.createServer(app);
 
 // Load environment variables
 config();
-const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+const normalizeOrigin = (origin) => origin.trim().replace(/\/+$/, "");
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173,http://127.0.0.1:5173")
   .split(",")
-  .map((origin) => origin.trim())
+  .map(normalizeOrigin)
   .filter(Boolean);
 
+const isAllowedOrigin = (origin) => allowedOrigins.includes(normalizeOrigin(origin));
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || isAllowedOrigin(origin)) {
+      return callback(null, true);
+    }
+
+    console.warn(`Blocked CORS request from: ${origin}`);
+    return callback(new Error("Origin is not allowed by CORS"));
+  },
+  credentials: true,
+};
+
 // Initialize socket.io with the server
-initializeSocket(server, allowedOrigins);
+initializeSocket(server, corsOptions);
 
 // Basic route to check server status
 app.get('/api', (req, res) => {
@@ -40,16 +54,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 // Enable CORS for the frontend
 app.set("trust proxy", 1);
-app.use(cors({
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Origin is not allowed by CORS"));
-  },
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 
 //All routes
 app.use('/api', RootRouter)

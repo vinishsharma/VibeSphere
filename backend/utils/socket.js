@@ -1,13 +1,9 @@
 import { Server } from "socket.io";
 import Message from '../models/message.model.js' // Adjust the import path as necessary
 
-const initializeSocket = (server, allowedOrigins) => {
+const initializeSocket = (server, corsOptions) => {
   const io = new Server(server, {
-    cors: {
-      origin: allowedOrigins,
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
+    cors: { ...corsOptions, methods: ["GET", "POST"] },
   });
 
   let userSocketMap = {}; // { userId: socketId }
