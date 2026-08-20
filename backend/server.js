@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Load environment variables
 config();
 const normalizeOrigin = (origin) => origin.trim().replace(/\/+$/, "");
-const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173,http://127.0.0.1:5173")
+const allowedOrigins = process.env.CLIENT_ORIGIN
   .split(",")
   .map(normalizeOrigin)
   .filter(Boolean);
